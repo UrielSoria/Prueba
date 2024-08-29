@@ -1,0 +1,15 @@
+c:\Users\uriso\C#\c#project\bin\Debug\net8.0\c#project.exe
+c:\Users\uriso\C#\c#project\bin\Debug\net8.0\c#project.deps.json
+c:\Users\uriso\C#\c#project\bin\Debug\net8.0\c#project.runtimeconfig.json
+c:\Users\uriso\C#\c#project\bin\Debug\net8.0\c#project.dll
+c:\Users\uriso\C#\c#project\bin\Debug\net8.0\c#project.pdb
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.AssemblyInfoInputs.cache
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.AssemblyInfo.cs
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.csproj.CoreCompileInputs.cache
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.dll
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\refint\c#project.dll
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.pdb
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.genruntimeconfig.cache
+c:\Users\uriso\C#\c#project\obj\Debug\net8.0\ref\c#project.dll
+C:\Users\uriso\C#\c#project\obj\Debug\net8.0\c#project.sourcelink.json
