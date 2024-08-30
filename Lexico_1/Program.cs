@@ -10,16 +10,23 @@ namespace prueba
     {
         static void Main(string[] args) 
         {
-            using(Lexico T = new Lexico())
+            try
             {
-            
-                T.SetContenido("HOLA");
-                T.SetClasificacion(Token.Tipos.Identificador);
-                Console.WriteLine(T.GetContenido() + " = " T.GetClasificacion());
+                using(Lexico T = new Lexico())
+                {
+                
+                    T.setContenido("HOLA");
+                    T.setClasificacion(Token.Tipos.Identificador);
+                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
 
-                T.SetContenido("123");
-                T.SetClasificacion(Token.Tipos.Numero);
-                Console.WriteLine(T.GetContenido() + " = " T.GetClasificacion());
+                    T.setContenido("123");
+                    T.setClasificacion(Token.Tipos.Numero);
+                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error: " +e.Message);
             }
         }
     }

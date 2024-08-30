@@ -18,18 +18,18 @@ namespace Lexico_1
             clasificacion = 0;
         }
 
-        public void SetContenido(string contenido){
+        public void setContenido(string contenido){
             this.contenido = contenido;
         }
-        public void SetClasificacion(Tipos clasificacion){
+        public void setClasificacion(Tipos clasificacion){
             this.clasificacion = clasificacion;
         }
 
-        public string GetContenido(){
+        public string getContenido(){
             return this.contenido;
         }
 
-        public Tipos GetClasificacion(){
+        public Tipos getClasificacion(){
             return this.clasificacion;
         }
     }
