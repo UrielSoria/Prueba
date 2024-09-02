@@ -9,7 +9,7 @@ namespace Lexico_1
     {
         public enum Tipos
         {
-            Identificador, Numero, Caracter
+            Identificador,Numero,Caracter,FinSentencia,InicioBloque,FinBloque, OperadorTernario, OperadorTermino
         }
         private string contenido;
         private Tipos clasificacion;

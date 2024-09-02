@@ -61,24 +61,48 @@ namespace Lexico_1
         {
             char c;
             string buffer = "";
-            //castear a int porque read y peek regresan int
-            //similar al metodo de las palabras
-            //ejemplo 123+z
-            //archivo.Read();
-            //lee caracteres en el archivo
-            //archivo.Peek();
-            //hace lo mismo pero no avanza
+         
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
             {
-
             }
+            buffer+=c;
             if(char.IsLetter(c))
             {
                 setClasificacion(Tipos.Identificador);
+                while(char.IsLetterOrDigit(c=(char)archivo.Peek()))
+                {
+                    buffer+=c;
+                    archivo.Read();
+                }
             }
             else if(char.IsDigit(c))
             {
                 setClasificacion(Tipos.Numero);
+                while(char.IsDigit(c=(char)archivo.Peek()))
+                {
+                    buffer+=c;
+                    archivo.Read();
+                }
+            }
+            else if(c==';')
+            {
+                setClasificacion(Tipos.FinSentencia);
+            }
+            else if (c == '{')
+            {
+                setClasificacion(Tipos.InicioBloque);
+            }
+            else if(c == '}')
+            {
+                setClasificacion(Tipos.FinBloque);
+            }
+            else if(c == '?')
+            {
+                setClasificacion(Tipos.OperadorTernario);
+            }
+            else if (c == '+' | c == '-')
+            {
+                setClasificacion(Tipos.OperadorTermino);
             }
             else
             {
@@ -86,6 +110,10 @@ namespace Lexico_1
             }
             setContenido(buffer);
             log.WriteLine(getContenido() + " = " + getClasificacion());
+        }
+        public bool finArchivo()
+        {
+            return archivo.EndOfStream;
         }
     }
 }
