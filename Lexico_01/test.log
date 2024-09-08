@@ -1,6 +1,0 @@
-{ = InicioBloque
-= = Asignacion
-= = Asignacion
-*= = IncrementoFactor
-/= = IncrementoFactor
-} = FinBloque

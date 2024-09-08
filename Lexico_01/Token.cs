@@ -12,8 +12,8 @@ namespace Lexico_01
             Identificador,Numero,Caracter,FinSentencia,
             InicioBloque,FinBloque, OperadorTernario, 
             OperadorTermino, OperadorFactor, IncrementoTermino, 
-            IncrementoFactor, Flechita, Asignacion, 
-            OperadorRelacional, OperadorLogico
+            IncrementoFactor, Puntero, Asignacion, 
+            OperadorRelacional, OperadorLogico, Moneda
         }
         private string contenido;
         private Tipos clasificacion;

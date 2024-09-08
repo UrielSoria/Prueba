@@ -16,26 +16,21 @@ namespace Lexico_01
             {
                 using(Lexico T = new Lexico())
                 {
-                   
+                   new Lexico("C:/Users/uriso/C#/Lexico_01/prueba.cpp");
+                    /*
                     while(!T.finArchivo())
                     {
                         T.nextToken();
-                    }
-                
-                    /*T.setContenido("HOLA");
-                    T.setClasificacion(Token.Tipos.Identificador);
-                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
+                    }*/
 
-                    T.setContenido("123");
-                    T.setClasificacion(Token.Tipos.Numero);
-                    Console.WriteLine(T.getContenido() + " = " + T.getClasificacion());
-                    */
+                   
                 }
             }
             catch(Exception e)
             {
                 Console.WriteLine("Error: " +e.Message);
             }
+            
             
         }
     }

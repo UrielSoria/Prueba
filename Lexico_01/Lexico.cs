@@ -10,7 +10,7 @@ using System.IO;
     el nombre del archivo
     Requerimiento 2: contador de lineas
     Requerimiento 3: Agregar OperadorRelacional
-                        ==l >l <l >=l <=l <>l !=l (diferente de ), !==             
+                        ==l >l <l >=l <=l <>l != (diferente de ), !==             
     requerimiento 4: OperadorLogico
                         && ||, !
 
@@ -22,15 +22,14 @@ namespace Lexico_01
     public class Lexico : Token, IDisposable
     {
         string PATH = "C:/Users/uriso/C#/Lexico_01/";
+        //string fileName = "C:/Users/uriso/C#/Lexico_01/prueba.cpp";
         StreamReader archivo;
         readonly StreamWriter log;
         StreamWriter asm;
-        int linea;
+        
 
         public Lexico()
-        {
-            linea = 1;
-            //Como contar lineas c#
+        {  
             log = new StreamWriter("./test.log");
             asm = new StreamWriter(PATH + "prueba.asm");
             log.AutoFlush = true;
@@ -43,24 +42,44 @@ namespace Lexico_01
             {
                 throw new Error("El archivo prueba.cpp no existe", log);
             }
-            
         }
 
-        /*
-        public Lexico(string nombre)
+        
+        public Lexico(string fileName)
         {
+            log = new StreamWriter( fileName + ".log");
+            log.AutoFlush = true;
+
+            if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
+            {
+                asm = new StreamWriter(fileName + ".asm");
+                asm.AutoFlush = true;
+                if( File.Exists(fileName))
+                {
+                archivo = new StreamReader("C:/Users/uriso/C#/Lexico_01/prueba.cpp");   
+                }
+                else
+                {
+                    throw new Error("El archivo prueba.cpp no existe", log);
+                }
+            }
+            else
+            {
+                throw new TipeFileMismatch("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
+            }
+
             /*
                 Si nombre = suma.cpp
                 LOG = suma.log
                 ASM = suma.asm
                 y validar la extension del nombre del archivo(que tenga cpp a fuerzas)
                 file (como verificar el archivo de un string y cambiarlo)
-            *
+            */
         }
-        */
+        
+        
         public void Dispose()
         {
-            Console.WriteLine("destructor");
             archivo.Close();
             log.Close();
             asm.Close();
@@ -69,11 +88,18 @@ namespace Lexico_01
         {
             char c;
             string buffer = "";
-         
+            int linenumber = 1;
+            
+            
+            
+
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
-            {
+            {   
+                
             }
             buffer+=c;
+           
+            
             if(char.IsLetter(c))
             {
                 setClasificacion(Tipos.Identificador);
@@ -131,7 +157,7 @@ namespace Lexico_01
                 }
                 else if ((c=(char)archivo.Peek()) == '>')
                 {
-                    setClasificacion(Tipos.Flechita);
+                    setClasificacion(Tipos.Puntero);
                     buffer += c;
                     archivo.Read();
                 }
@@ -208,14 +234,31 @@ namespace Lexico_01
                     
                 }
             }
+            else if (c =='$')
+            {
+                setClasificacion(Tipos.Caracter);
+                
+                if(char.IsDigit(c=(char)archivo.Peek()))
+                {setClasificacion(Tipos.Moneda);
+                   while(char.IsDigit(c=(char)archivo.Peek()))
+                {
+                    buffer+=c;
+                    archivo.Read();
+                }
+                }
+            }
+            
             else
             {
                 setClasificacion(Tipos.Caracter);
             }
+            
             if(!finArchivo())
             {
+                linenumber ++;
                 setContenido(buffer);
-                log.WriteLine(getContenido() + " = " + getClasificacion());
+                log.WriteLine("Linea:"+linenumber +" " + getContenido() + " = " + getClasificacion());
+                
             }
             
         }
@@ -223,14 +266,6 @@ namespace Lexico_01
         {
             return archivo.EndOfStream;
         }
-        public int LineCounter()
-        {
-            while(!finArchivo())
-            {
-                linea++;
-            }
-            
-            return linea;
-        }
+        
     }
 }
