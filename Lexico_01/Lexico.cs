@@ -44,15 +44,20 @@ namespace Lexico_01
             }
         }
 
+        static string GetFileNameWithoutExtension(string filename){
+            return System.IO.Path.GetFileNameWithoutExtension(filename);
+        }
         
         public Lexico(string fileName)
         {
-            log = new StreamWriter( fileName + ".log");
+            string fileNameWithoutExtension;
+            fileNameWithoutExtension = GetFileNameWithoutExtension(fileName);
+            log = new StreamWriter( fileNameWithoutExtension + ".log");
             log.AutoFlush = true;
 
             if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
             {
-                asm = new StreamWriter(fileName + ".asm");
+                asm = new StreamWriter(fileNameWithoutExtension + ".asm");
                 asm.AutoFlush = true;
                 if( File.Exists(fileName))
                 {
@@ -88,15 +93,18 @@ namespace Lexico_01
         {
             char c;
             string buffer = "";
-            int linenumber = 1;
-            
-            
+
             
 
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
             {   
+                if (c == '\n')
+                {
                 
+                
+                }
             }
+            
             buffer+=c;
            
             
@@ -253,11 +261,11 @@ namespace Lexico_01
                 setClasificacion(Tipos.Caracter);
             }
             
-            if(!finArchivo())
+            if(!finArchivo() || c == '\n')
             {
-                linenumber ++;
+                
                 setContenido(buffer);
-                log.WriteLine("Linea:"+linenumber +" " + getContenido() + " = " + getClasificacion());
+                log.WriteLine(getContenido() + " = " + getClasificacion());
                 
             }
             
@@ -266,6 +274,11 @@ namespace Lexico_01
         {
             return archivo.EndOfStream;
         }
-        
+        public int contarLineas()
+        {
+            int linenumber = File.ReadAllLines("prueba.cpp").Length;
+            log.WriteLine("lineas: " + linenumber);
+            return linenumber;
+        }
     }
 }

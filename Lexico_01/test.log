@@ -1,0 +1,9 @@
+{ = InicioBloque
+$79 = Moneda
+$ = Caracter
+kjla = Identificador
+$ = Caracter
+$ = Caracter
+-> = Puntero
+} = FinBloque
+lineas: 14
