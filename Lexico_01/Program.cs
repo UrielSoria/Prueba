@@ -22,7 +22,7 @@ namespace Lexico_01
                     {
                         T.nextToken();
                     }
-                    T.contarLineas();
+                    
                    
                 }
             }

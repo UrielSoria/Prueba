@@ -1,14 +1,15 @@
 { = InicioBloque
 && = OperadorLogico
-& = OperadorLogico
+& = Caracter
 || = OperadorLogico
-| = OperadorLogico
+| = Caracter
 ! = OperadorLogico
 != = OperadorRelacional
 == = OperadorRelacional
 < = OperadorRelacional
 < = OperadorRelacional
 <> = OperadorRelacional
->> = OperadorRelacional
+> = OperadorRelacional
+> = OperadorRelacional
 } = FinBloque
-lineas: 9
+lineas: 10

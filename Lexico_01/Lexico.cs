@@ -61,7 +61,7 @@ namespace Lexico_01
                 asm.AutoFlush = true;
                 if( File.Exists(fileName))
                 {
-                archivo = new StreamReader("C:/Users/uriso/C#/Lexico_01/prueba.cpp");   
+                archivo = new StreamReader(fileName);   
                 }
                 else
                 {
@@ -85,6 +85,9 @@ namespace Lexico_01
         
         public void Dispose()
         {
+            int linenumber = File.ReadAllLines("prueba.cpp").Length;
+            linenumber = linenumber + 1;
+            log.WriteLine("lineas: " + linenumber);
             archivo.Close();
             log.Close();
             asm.Close();
@@ -98,13 +101,7 @@ namespace Lexico_01
 
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
             {   
-                if (c == '\n')
-                {
-                
-                
-                }
             }
-            
             buffer+=c;
            
             
@@ -192,7 +189,7 @@ namespace Lexico_01
                     
                 }
             }
-            else if (c=='<' || c == '>' )
+            else if (c=='<')
             {
                   setClasificacion(Tipos.OperadorRelacional);
                   if((c=(char)archivo.Peek()) == '=')
@@ -208,6 +205,16 @@ namespace Lexico_01
                     archivo.Read();
                     
                 }
+            }
+            else if(c == '>')
+            {
+               setClasificacion(Tipos.OperadorRelacional);
+                  if((c=(char)archivo.Peek()) == '=')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    buffer += c;
+                    archivo.Read();
+                } 
             }
             else if(c=='!'){
                 setClasificacion(Tipos.OperadorLogico);
@@ -260,7 +267,7 @@ namespace Lexico_01
             {
                 setClasificacion(Tipos.Caracter);
             }
-            if(!finArchivo() || c == '\n')
+            if(!finArchivo())
             {
                 setContenido(buffer);
                 log.WriteLine(getContenido() + " = " + getClasificacion());
@@ -272,11 +279,6 @@ namespace Lexico_01
         {
             return archivo.EndOfStream;
         }
-        public int contarLineas()
-        {
-            int linenumber = File.ReadAllLines("prueba.cpp").Length;
-            log.WriteLine("lineas: " + linenumber);
-            return linenumber;
-        }
+        
     }
 }

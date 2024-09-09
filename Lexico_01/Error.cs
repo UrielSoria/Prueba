@@ -12,5 +12,7 @@ namespace Lexico_01
         {
             log.WriteLine("Error: " + message);
         }
+        
     }
+    
 }
