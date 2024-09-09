@@ -1,9 +1,14 @@
 { = InicioBloque
-$79 = Moneda
-$ = Caracter
-kjla = Identificador
-$ = Caracter
-$ = Caracter
--> = Puntero
+&& = OperadorLogico
+& = OperadorLogico
+|| = OperadorLogico
+| = OperadorLogico
+! = OperadorLogico
+!= = OperadorRelacional
+== = OperadorRelacional
+< = OperadorRelacional
+< = OperadorRelacional
+<> = OperadorRelacional
+>> = OperadorRelacional
 } = FinBloque
-lineas: 14
+lineas: 9

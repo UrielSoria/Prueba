@@ -200,6 +200,12 @@ namespace Lexico_01
                     setClasificacion(Tipos.OperadorRelacional);
                     buffer += c;
                     archivo.Read();
+                }
+                else if((c=(char)archivo.Peek()) == '>')
+                {
+                    setClasificacion(Tipos.OperadorRelacional);
+                    buffer += c;
+                    archivo.Read();
                     
                 }
             }
@@ -213,17 +219,10 @@ namespace Lexico_01
                     
                 }
             }
-            else if(c== '<'){
-                if((c=(char)archivo.Peek()) == '>')
-                {
-                    setClasificacion(Tipos.OperadorRelacional);
-                    buffer += c;
-                    archivo.Read();
-                    
-                }
-            }
+            
             else if (c == '&')
             {
+                setClasificacion(Tipos.Caracter);
                 if((c=(char)archivo.Peek()) == '&')
                 {
                     setClasificacion(Tipos.OperadorLogico);
@@ -234,6 +233,7 @@ namespace Lexico_01
             }
             else if (c == '|')
             {
+                setClasificacion(Tipos.Caracter);
                 if((c=(char)archivo.Peek()) == '|')
                 {
                     setClasificacion(Tipos.OperadorLogico);
@@ -260,10 +260,8 @@ namespace Lexico_01
             {
                 setClasificacion(Tipos.Caracter);
             }
-            
             if(!finArchivo() || c == '\n')
             {
-                
                 setContenido(buffer);
                 log.WriteLine(getContenido() + " = " + getClasificacion());
                 
