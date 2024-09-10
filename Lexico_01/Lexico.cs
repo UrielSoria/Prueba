@@ -70,7 +70,7 @@ namespace Lexico_01
             }
             else
             {
-                throw new TipeFileMismatch("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
+                throw new Error("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
             }
 
             /*
