@@ -30,8 +30,8 @@ namespace Lexico_01
 
         public Lexico()
         {  
-            log = new StreamWriter("./test.log");
-            asm = new StreamWriter(PATH + "prueba.asm");
+            log = new StreamWriter("./main.log");
+            asm = new StreamWriter(PATH + "main.asm");
             log.AutoFlush = true;
             asm.AutoFlush = true;
             if( File.Exists(PATH + "prueba.cpp"))
@@ -44,14 +44,11 @@ namespace Lexico_01
             }
         }
 
-        static string GetFileNameWithoutExtension(string filename){
-            return System.IO.Path.GetFileNameWithoutExtension(filename);
-        }
         
         public Lexico(string fileName)
         {
             string fileNameWithoutExtension;
-            fileNameWithoutExtension = GetFileNameWithoutExtension(fileName);
+            fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             log = new StreamWriter( fileNameWithoutExtension + ".log");
             log.AutoFlush = true;
 
@@ -97,13 +94,10 @@ namespace Lexico_01
             char c;
             string buffer = "";
 
-            
-
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
             {   
             }
             buffer+=c;
-           
             
             if(char.IsLetter(c))
             {
@@ -114,6 +108,7 @@ namespace Lexico_01
                     archivo.Read();
                 }
             }
+            //Numero
             else if(char.IsDigit(c))
             {
                 setClasificacion(Tipos.Numero);
@@ -121,6 +116,26 @@ namespace Lexico_01
                 {
                     buffer+=c;
                     archivo.Read();
+                }
+                //Decimal
+                if(c == '.')
+                {
+                    buffer+=c;
+                    archivo.Read();
+                    if(char.IsDigit(c=(char)archivo.Peek()))
+                    {
+                        setClasificacion(Tipos.Numero);
+                        while(char.IsDigit(c=(char)archivo.Peek()))
+                        {
+                            buffer+=c;
+                            archivo.Read();
+                        }
+                    }
+                    else
+                    {
+                        throw new Error("Error de formato en número decimal", log);
+                    }
+                    
                 }
             }
             else if(c==';')
@@ -262,6 +277,38 @@ namespace Lexico_01
                 }
                 }
             }
+            else if(c=='@')
+            {
+                setClasificacion(Tipos.Caracter);
+            }
+            else if(c=='#')
+            {
+                setClasificacion(Tipos.Caracter);
+                while(char.IsDigit(c=(char)archivo.Peek()))
+                {
+                    buffer+=c;
+                    archivo.Read();
+                }
+            }
+            else if(c=='"'){
+                //while si no es fin de archivo y no hay " sigue,
+                // if hay coma concatena, sino lanza erro
+                setClasificacion(Tipos.Cadena);
+                while((c=(char)archivo.Peek()) != '"' || !archivo.EndOfStream)
+                {
+                    buffer+=c;
+                    archivo.Read();
+                    if (c == '"')
+                    {
+                        buffer+=c;
+                        archivo.Read();
+                    }
+                    else if (archivo.EndOfStream)
+                    {
+                        throw new Error("No se han cerrado las comillas ", log);
+                    }
+                }
+            }
             
             else
             {
@@ -273,6 +320,7 @@ namespace Lexico_01
                 log.WriteLine(getContenido() + " = " + getClasificacion());
                 
             }
+
             
         }
         public bool finArchivo()

@@ -16,7 +16,8 @@ namespace Lexico_01
             {
                 using(Lexico T = new Lexico())
                 {
-                   //new Lexico("C:/Users/uriso/C#/Lexico_01/prueba.cpp");
+                   
+                    
                     
                     while(!T.finArchivo())
                     {
