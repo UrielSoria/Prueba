@@ -151,13 +151,14 @@ namespace Lexico_01
                     //En caso de que el exponenete tenga signo
                     if ((c=(char)archivo.Peek()) == '+' || (c=(char)archivo.Peek())== '-')
                     {
+                    
                         buffer+=c;
                         setClasificacion(Tipos.Numero);
                         archivo.Read();
                         if(char.IsDigit(c=(char)archivo.Peek()))
                         {
                             setClasificacion(Tipos.Numero);
-                            while(char.IsDigit(c=(char)archivo.Peek()) || !archivo.EndOfStream)
+                            while(char.IsDigit(c=(char)archivo.Peek()))
                             {
                                 buffer+=c;
                                 archivo.Read();
@@ -334,10 +335,6 @@ namespace Lexico_01
                 }
                 }
             }
-            else if(c=='@')
-            {
-                setClasificacion(Tipos.Caracter);
-            }
             else if(c=='#')
             {
                 setClasificacion(Tipos.Caracter);
@@ -377,19 +374,19 @@ namespace Lexico_01
                     buffer+=c;
                     archivo.Read();
                     
-                    if (char.IsLetterOrDigit(c))
-                    {
+                    // if (char.IsLetterOrDigit(c))
+                    // {
                         if ((c=(char)archivo.Peek()) == '\'')
                         {
                             buffer+=c;
                             archivo.Read();
-                            Console.WriteLine("l");
                             break;
                         }
-                        else{
-                            throw new Error("Caracter invalido en cadena o no se ha cerrado la cadena", log, linea);
+                        else
+                        {
+                            throw new Error("Caracter invalido", log, linea);
                         } 
-                    }
+                    // }
                 }
             }
      
