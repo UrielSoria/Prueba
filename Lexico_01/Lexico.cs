@@ -27,9 +27,10 @@ namespace Lexico_01
         readonly StreamWriter log;
         StreamWriter asm;
         
-
+        int linea = 1;
         public Lexico()
         {  
+            
             log = new StreamWriter("./main.log");
             asm = new StreamWriter(PATH + "main.asm");
             log.AutoFlush = true;
@@ -47,6 +48,7 @@ namespace Lexico_01
         
         public Lexico(string fileName)
         {
+            
             string fileNameWithoutExtension;
             fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             log = new StreamWriter( fileNameWithoutExtension + ".log");
@@ -82,9 +84,7 @@ namespace Lexico_01
         
         public void Dispose()
         {
-            int linenumber = File.ReadAllLines("prueba.cpp").Length;
-            linenumber = linenumber + 1;
-            log.WriteLine("lineas: " + linenumber);
+            
             archivo.Close();
             log.Close();
             asm.Close();
@@ -96,6 +96,10 @@ namespace Lexico_01
 
             while(char.IsWhiteSpace(c=(char)archivo.Read()))
             {   
+                if (c == '\n')
+                {
+                    linea++;
+                }
             }
             buffer+=c;
             
@@ -133,9 +137,62 @@ namespace Lexico_01
                     }
                     else
                     {
-                        throw new Error("Error de formato en número decimal", log);
+                        throw new Error("En el formato de número decimal", log, linea);
                     }
                     
+
+                }
+                //exponente
+                if (char.ToLower(c)=='e') // Parte Exponencial
+                {
+                    buffer+=c;
+                    archivo.Read();
+                    setClasificacion(Tipos.Numero);
+                    //En caso de que el exponenete tenga signo
+                    if ((c=(char)archivo.Peek()) == '+' || (c=(char)archivo.Peek())== '-')
+                    {
+                        buffer+=c;
+                        setClasificacion(Tipos.Numero);
+                        archivo.Read();
+                        if(char.IsDigit(c=(char)archivo.Peek()))
+                        {
+                            setClasificacion(Tipos.Numero);
+                            while(char.IsDigit(c=(char)archivo.Peek()) || !archivo.EndOfStream)
+                            {
+                                buffer+=c;
+                                archivo.Read();
+                            }
+                        }
+                        else if (char.IsLetter(c=(char)archivo.Peek()))
+                        {
+                            throw new Error("Exponente con letra", log, linea);
+                        }
+                        else
+                        {
+                            throw new Error("Exponente incomleto", log, linea);
+                        }
+                    }
+                    //si no tiene signo
+                    else
+                    {
+                        if(char.IsDigit(c=(char)archivo.Peek()))
+                        {
+                            setClasificacion(Tipos.Numero);
+                            while(char.IsDigit(c=(char)archivo.Peek()))
+                            {
+                                buffer+=c;
+                                archivo.Read();
+                            }
+                        }
+                        else if (char.IsLetter(c=(char)archivo.Peek()))
+                        {
+                            throw new Error("Exponente con letra", log, linea);
+                        }
+                        else
+                        {
+                            throw new Error("Exponente incomleto", log, linea);
+                        }
+                    }  
                 }
             }
             else if(c==';')
@@ -291,8 +348,7 @@ namespace Lexico_01
                 }
             }
             else if(c=='"'){
-                //while si no es fin de archivo y no hay " sigue,
-                // if hay coma concatena, sino lanza erro
+                
                 setClasificacion(Tipos.Cadena);
                 while((c=(char)archivo.Peek()) != '"' || !archivo.EndOfStream)
                 {
@@ -302,14 +358,41 @@ namespace Lexico_01
                     {
                         buffer+=c;
                         archivo.Read();
+                        break;
                     }
                     else if (archivo.EndOfStream)
                     {
-                        throw new Error("No se han cerrado las comillas ", log);
+                        throw new Error("No se han cerrado las comillas", log, linea);
+                    }
+                    
+                }
+                
+            }
+            else if(c == '\'')
+            {
+                
+                setClasificacion(Tipos.Caracter);
+                while((c=(char)archivo.Peek()) != '\'')
+                {
+                    buffer+=c;
+                    archivo.Read();
+                    
+                    if (char.IsLetterOrDigit(c))
+                    {
+                        if ((c=(char)archivo.Peek()) == '\'')
+                        {
+                            buffer+=c;
+                            archivo.Read();
+                            Console.WriteLine("l");
+                            break;
+                        }
+                        else{
+                            throw new Error("Caracter invalido en cadena o no se ha cerrado la cadena", log, linea);
+                        } 
                     }
                 }
             }
-            
+     
             else
             {
                 setClasificacion(Tipos.Caracter);
