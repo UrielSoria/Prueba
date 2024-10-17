@@ -478,7 +478,21 @@ namespace Lexico2
                 if (estado == 0){
                     buffer = "";
                 }
-                if (estado == E )
+                
+                if (estado >= 0)
+                {
+                    archivo.Read();
+                    if (transicion == '\n')
+                    {
+                        linea++;
+                    }
+                    if (estado > 0)
+                    {
+                        buffer+= transicion;
+                    }
+                }
+            }
+            if (estado == E )
                 {
                     if (getClasificacion() == Tipos.Numero)
                     {
@@ -494,19 +508,6 @@ namespace Lexico2
                         throw new Error ("Lexico, no se ha cerrado el comentario de bloque", log, linea);
                     }
                 }
-                if (estado >= 0)
-                {
-                    archivo.Read();
-                    if (transicion == '\n')
-                    {
-                        linea++;
-                    }
-                    if (estado > 0)
-                    {
-                        buffer+= transicion;
-                    }
-                }
-            }
 
             if (!finArchivo())
             {
