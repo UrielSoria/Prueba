@@ -4,25 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 
-/*
 
-    Requerimiento 1: Sobrecargar el constructor lexico para que escriba como argumento
-    el nombre del archivo
-    Requerimiento 2: contador de lineas
-    Requerimiento 3: Agregar OperadorRelacional
-                        ==l >l <l >=l <=l <>l != (diferente de ), !==             
-    requerimiento 4: OperadorLogico
-                        && ||, !
-
-    Examen: Agregar el siguiente token o tokens
-*/
 
 namespace Lexico_01
 {
     public class Lexico : Token, IDisposable
     {
         string PATH = "C:/Users/uriso/C#/Lexico_01/";
-        //string fileName = "C:/Users/uriso/C#/Lexico_01/prueba.cpp";
         StreamReader archivo;
         readonly StreamWriter log;
         StreamWriter asm;
@@ -72,19 +60,12 @@ namespace Lexico_01
                 throw new Error("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
             }
 
-            /*
-                Si nombre = suma.cpp
-                LOG = suma.log
-                ASM = suma.asm
-                y validar la extension del nombre del archivo(que tenga cpp a fuerzas)
-                file (como verificar el archivo de un string y cambiarlo)
-            */
         }
         
         
         public void Dispose()
         {
-            
+            // log.WriteLine("Lineas: "+linea);
             archivo.Close();
             log.Close();
             asm.Close();
@@ -121,14 +102,14 @@ namespace Lexico_01
                     buffer+=c;
                     archivo.Read();
                 }
-                //Decimal
+                //Parte fracccional
                 if(c == '.')
                 {
                     buffer+=c;
                     archivo.Read();
                     if(char.IsDigit(c=(char)archivo.Peek()))
                     {
-                        setClasificacion(Tipos.Numero);
+                        
                         while(char.IsDigit(c=(char)archivo.Peek()))
                         {
                             buffer+=c;
@@ -137,27 +118,24 @@ namespace Lexico_01
                     }
                     else
                     {
-                        throw new Error("En el formato de número decimal", log, linea);
+                        throw new Error("Parte fraccionaria incompleta,", log, linea);
                     }
                     
 
                 }
-                //exponente
+                
                 if (char.ToLower(c)=='e') // Parte Exponencial
                 {
                     buffer+=c;
                     archivo.Read();
-                    setClasificacion(Tipos.Numero);
                     //En caso de que el exponenete tenga signo
                     if ((c=(char)archivo.Peek()) == '+' || (c=(char)archivo.Peek())== '-')
                     {
-                    
                         buffer+=c;
                         setClasificacion(Tipos.Numero);
                         archivo.Read();
                         if(char.IsDigit(c=(char)archivo.Peek()))
                         {
-                            setClasificacion(Tipos.Numero);
                             while(char.IsDigit(c=(char)archivo.Peek()))
                             {
                                 buffer+=c;
@@ -178,7 +156,6 @@ namespace Lexico_01
                     {
                         if(char.IsDigit(c=(char)archivo.Peek()))
                         {
-                            setClasificacion(Tipos.Numero);
                             while(char.IsDigit(c=(char)archivo.Peek()))
                             {
                                 buffer+=c;
@@ -264,8 +241,8 @@ namespace Lexico_01
             }
             else if (c=='<')
             {
-                  setClasificacion(Tipos.OperadorRelacional);
-                  if((c=(char)archivo.Peek()) == '=')
+                setClasificacion(Tipos.OperadorRelacional);
+                if((c=(char)archivo.Peek()) == '=')
                 {
                     setClasificacion(Tipos.OperadorRelacional);
                     buffer += c;
@@ -281,8 +258,8 @@ namespace Lexico_01
             }
             else if(c == '>')
             {
-               setClasificacion(Tipos.OperadorRelacional);
-                  if((c=(char)archivo.Peek()) == '=')
+                setClasificacion(Tipos.OperadorRelacional);
+                if((c=(char)archivo.Peek()) == '=')
                 {
                     setClasificacion(Tipos.OperadorRelacional);
                     buffer += c;
@@ -325,7 +302,6 @@ namespace Lexico_01
             else if (c =='$')
             {
                 setClasificacion(Tipos.Caracter);
-                
                 if(char.IsDigit(c=(char)archivo.Peek()))
                 {setClasificacion(Tipos.Moneda);
                    while(char.IsDigit(c=(char)archivo.Peek()))
@@ -353,40 +329,34 @@ namespace Lexico_01
                     archivo.Read();
                     if (c == '"')
                     {
-                        buffer+=c;
+                        // buffer+=c;
                         archivo.Read();
                         break;
                     }
                     else if (archivo.EndOfStream)
                     {
                         throw new Error("No se han cerrado las comillas", log, linea);
-                    }
-                    
+                    }  
                 }
-                
             }
+            //Comillas simples
             else if(c == '\'')
             {
-                
                 setClasificacion(Tipos.Caracter);
                 while((c=(char)archivo.Peek()) != '\'')
                 {
                     buffer+=c;
                     archivo.Read();
-                    
-                    // if (char.IsLetterOrDigit(c))
-                    // {
-                        if ((c=(char)archivo.Peek()) == '\'')
-                        {
-                            buffer+=c;
-                            archivo.Read();
-                            break;
-                        }
-                        else
-                        {
-                            throw new Error("Caracter invalido", log, linea);
-                        } 
-                    // }
+                    if ((c=(char)archivo.Peek()) == '\'')
+                    {
+                        buffer+=c;
+                        archivo.Read();
+                        break;
+                    }
+                    else
+                    {
+                        throw new Error("Caracter invalido", log, linea);
+                    } 
                 }
             }
      
