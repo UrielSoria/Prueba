@@ -447,7 +447,6 @@ namespace Lexico2
                     }
                     else if (finArchivo()){
                         nuevoEstado = E;
-                        // throw new Error("no se ha cerrado el comentario de bloque", log, linea);
                     }
                     
                     break;
@@ -461,7 +460,6 @@ namespace Lexico2
                     }
                     else if (finArchivo()){
                         nuevoEstado = E;
-                        // throw new Error("no se ha cerrado el comentario de bloque", log, linea);
                     }
                     break;
             }
