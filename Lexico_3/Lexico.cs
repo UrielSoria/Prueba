@@ -19,7 +19,7 @@ namespace Lexico_3
         const int F = -1;
         const int E = -2;
         int[,] TRAND = {
-            {   0,    1,  1,  33, 1,  12, 14,  8,  9, 10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34,  0, F, 33 },
+            {   0,    1,  2,  33, 1,  12, 14,  8,  9, 10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34,  0, F, 33 },
             {   F,    1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, F,  F },
             {   F,    F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, F,  F },
             {   E,    E,  4,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E, E,  E },
@@ -132,7 +132,28 @@ namespace Lexico_3
                 return 2;
             }
             else if(c == '.'){
-                
+                return 33;
+            }
+            else if(c == '+'){
+                return 12;
+            }
+            else if(c == '-'){
+                return 14;
+            }
+            else if (c == ';'){
+                return 8;
+            }
+            else if (c == '{'){
+                return 9;
+            }
+            else if (c == '}'){
+                return 10;
+            }
+            else if (c == '?'){
+                return 11;
+            }
+            else if (c == '='){
+                return 23;
             }
             return 25;
         }
@@ -140,7 +161,31 @@ namespace Lexico_3
             switch (estado){
                 case 1: setClasificacion(Tipos.Identificador );break;
                 case 2: setClasificacion(Tipos.Numero); break;
-                default : setClasificacion(Tipos.Caracter); break;
+                case 8: setClasificacion(Tipos.FinSentencia); break;
+                case 9: setClasificacion(Tipos.InicioBloque); break;
+                case 10: setClasificacion(Tipos.FinBloque); break;
+                case 11: setClasificacion(Tipos.OperadorTernario); break;
+                case 12: setClasificacion(Tipos.OperadorTermino); break;
+                case 13: setClasificacion(Tipos.IncrementoTermino); break;
+                case 14: setClasificacion(Tipos.OperadorTermino); break;
+                case 15: setClasificacion(Tipos.Puntero); break;
+                case 16: setClasificacion(Tipos.OperadorFactor); break;
+                case 17: setClasificacion(Tipos.IncrementoFactor); break;
+                case 19: setClasificacion(Tipos.OperadorLogico); break;
+                case 21: setClasificacion(Tipos.OperadorLogico);break;
+                case 22: setClasificacion(Tipos.OperadorRelacional); break;
+                case 23: setClasificacion(Tipos.Asignacion); break;
+                case 24: setClasificacion(Tipos.OperadorRelacional); break;
+                case 25: setClasificacion(Tipos.OperadorRelacional); break;
+                case 26: setClasificacion(Tipos.OperadorRelacional); break;
+                case 27: setClasificacion(Tipos.Cadena); break;
+                case 34: setClasificacion(Tipos.IncrementoFactor); break;
+                case 18:
+                case 20:
+                case 29:
+                case 32:
+                case 33: setClasificacion(Tipos.Caracter); break;
+                // default : setClasificacion(Tipos.Caracter); break;
             }
         }
         public void nextToken()
