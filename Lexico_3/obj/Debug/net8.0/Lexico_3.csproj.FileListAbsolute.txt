@@ -13,3 +13,15 @@ C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\refint\Lexico_3.dll
 C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\Lexico_3.pdb
 C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\Lexico_3.genruntimeconfig.cache
 C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\ref\Lexico_3.dll
+C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\Lexico_3.csproj.AssemblyReference.cache
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\ExcelDataReader.dll
+C:\Users\uriso\C#\Lexico_3\obj\Debug\net8.0\Lexico_3.csproj.Up2Date
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\SpreadsheetLight.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\uriso\C#\Lexico_3\bin\Debug\net8.0\Microsoft.Office.Interop.Excel.dll

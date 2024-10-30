@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
+using SpreadsheetLight;
+using DocumentFormat.OpenXml.Office2010.Drawing.Slicer;
 
 
 
@@ -16,6 +18,7 @@ namespace Lexico_3
         readonly StreamWriter log;
         StreamWriter asm;
         int linea = 1;
+        
         const int F = -1;
         const int E = -2;
         int[,] TRAND = {
@@ -55,12 +58,11 @@ namespace Lexico_3
             {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
             {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 17, 36,  F,  F,  F,  F,  F,  F,  F,  F,  F, 35,  F,  F,  F  },
             { 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,  0, 35, 35  },
-            { 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36  },
-            { 36, 36, 36, 36, 36, 36, 35, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36,  0, 36, 36, 36  }
+            { 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36,  E, 36  },
+            { 36, 36, 36, 36, 36, 36, 35, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36,  0, 36,  E, 36  }
         };
         public Lexico()
         {  
-            
             log = new StreamWriter("./prueba.log");
             asm = new StreamWriter(PATH + "prueba.asm");
             log.AutoFlush = true;
@@ -73,12 +75,12 @@ namespace Lexico_3
             {
                 throw new Error("El archivo prueba.cpp no existe", log);
             }
+            
         }
 
         
         public Lexico(string fileName)
         {
-            
             string fileNameWithoutExtension;
             fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             log = new StreamWriter( fileNameWithoutExtension + ".log");
@@ -107,92 +109,118 @@ namespace Lexico_3
         
         public void Dispose()
         {
-            // log.WriteLine("Lineas: "+linea);
             archivo.Close();
             log.Close();
             asm.Close();
+            // sl.Close();
         }
         /*
             WS	L	D	.	E|e	+	-	;	{	}	?	=	*	%	&	|	!	<	>	"	\'	#	/	\n	EOF	λ
         */
         private int Columna(char c)
         {
-            if (c == '\n'){
+            if (c == '\n')
+            {
                 return 23;
             }
-            else if (finArchivo()){
+            else if (finArchivo())
+            {
                 return 24;
             }
-            else if(char.IsWhiteSpace(c)){
+            else if(char.IsWhiteSpace(c))
+            {
                 return 0;
             }
-            else if (char.ToLower(c) == 'e'){
+            else if (char.ToLower(c) == 'e')
+            {
                 return 4;
             }
-            else if (char.IsLetter(c)){
+            else if (char.IsLetter(c))
+            {
                 return 1;
             }
-            else if(char.IsDigit(c)){
+            else if(char.IsDigit(c))
+            {
                 return 2;
             }
-            else if(c == '.'){
+            else if(c == '.')
+            {
                 return 3;
             }
-            else if(c == '+'){
+            else if(c == '+')
+            {
                 return 5;
             }
-            else if(c == '-'){
+            else if(c == '-')
+            {
                 return 6;
             }
-            else if (c == ';'){
+            else if (c == ';')
+            {
+                return 7;
+            }
+            else if (c == '{')
+            {
                 return 8;
             }
-            else if (c == '{'){
-                return 8;
-            }
-            else if (c == '}'){
+            else if (c == '}')
+            {
                 return 9;
             }
-            else if (c == '?'){
+            else if (c == '?')
+            {
                 return 10;
             }
-            else if (c == '='){
+            else if (c == '=')
+            {
                 return 11;
             }
-            else if (c == '*'){
+            else if (c == '*')
+            {
                 return 12;
             }
-            else if (c == '%'){
+            else if (c == '%')
+            {
                 return 13;
             }
-            else if (c == '&'){
+            else if (c == '&')
+            {
                 return 14;
             }
-            else if (c == '|'){
+            else if (c == '|')
+            {
                 return 15;
             }
-            else if (c == '!'){
+            else if (c == '!')
+            {
                 return 16;
             }
-            else if (c == '<'){
+            else if (c == '<')
+            {
                 return 17;
             }
-            else if (c == '>'){
+            else if (c == '>')
+            {
                 return 18;
             }
-            else if (c == '"'){
+            else if (c == '"')
+            {
                 return 19;
             }
-            else if (c == '\''){
+            else if (c == '\'')
+            {
                 return 20;
             }
-            else if (c == '#'){
+            else if (c == '#')
+            {
                 return 21;
             }
-            else if (c == '/'){
+            else if (c == '/')
+            {
                 return 22;
             }
-            else{
+            else
+            {
                 return 25;
             }
         }
@@ -227,18 +255,51 @@ namespace Lexico_3
                 // default : setClasificacion(Tipos.Caracter); break;
             }
         }
-        public void nextToken()
+        // recibe un bool, si es true, matriz; si es negativo estado = excel
+        
+        public void nextToken(bool x)
         {
+            SLDocument sl;
+            string path = @"C:/Users/uriso/C#/Lexico_3/TRAND.xlsx";
+            
+
+
+
+
+            sl = new SLDocument(path);
             char c;
             string buffer = "";
             int estado = 0;
-
             while(estado >= 0)
             {
                 c = (char)archivo.Peek();
-            
-                estado = TRAND[estado, Columna(c)];
+                if (x == true){
+                    estado = TRAND[estado, Columna(c)];
+                    Console.WriteLine(estado);
+                }
+                else{
+                    string valor = "0";
+                    int fila = 1;
+                    while(!string.IsNullOrEmpty(sl.GetCellValueAsString(fila, 1))){
+                        // estado = sl.GetCellValueAsInt32(estado +1 , Columna(c) +1);
+                        valor = sl.GetCellValueAsString(estado +1, Columna(c) + 1);
+                        if (valor == "F"){
+                            estado = F;
+                        }
+                        else if (valor == "E"){
+                            estado = E;
+                        }
+                        else {
+                            estado = int.Parse(valor);
+                            Console.WriteLine(estado);
+                        }
 
+                        // Console.WriteLine(sl.GetCellValueAsInt32(5, 6));
+                        fila ++;
+                        break;
+                    }
+                }
+                    // Clasifica(estado);
                 Clasifica(estado);
                 if (estado >= 0)
                 {
