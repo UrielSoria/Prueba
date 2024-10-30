@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Office2010.Drawing.Slicer;
+using Excel = Microsoft.Office.Interop.Excel;
 
 
 
@@ -262,7 +263,11 @@ namespace Lexico_3
             SLDocument sl;
             string path = @"C:/Users/uriso/C#/Lexico_3/TRAND.xlsx";
             
-
+            Excel.Application excelApp = new Excel.Application();
+        
+            Excel.Workbook workbook = excelApp.Workbooks.Open(path);
+            Excel._Worksheet worksheet = (Excel._Worksheet)workbook.Sheets[1];
+            Excel.Range range = worksheet.UsedRange;
 
 
 
@@ -339,6 +344,9 @@ namespace Lexico_3
             setContenido(buffer);
             log.WriteLine(getContenido() + " ····· " + getClasificacion());
             }
+
+            workbook.Close(false);
+            excelApp.Quit();
         }
         public bool finArchivo()
         {
