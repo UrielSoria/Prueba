@@ -261,13 +261,9 @@ namespace Lexico_3
         public void nextToken(bool x)
         {
             SLDocument sl;
-            string path = @"C:/Users/uriso/C#/Lexico_3/TRAND.xlsx";
+            string path = @"C:\Users\uriso\C#\Lexico_3\TRAND.xlsx";
             
-            Excel.Application excelApp = new Excel.Application();
-        
-            Excel.Workbook workbook = excelApp.Workbooks.Open(path);
-            Excel._Worksheet worksheet = (Excel._Worksheet)workbook.Sheets[1];
-            Excel.Range range = worksheet.UsedRange;
+            
 
 
 
@@ -280,7 +276,7 @@ namespace Lexico_3
                 c = (char)archivo.Peek();
                 if (x == true){
                     estado = TRAND[estado, Columna(c)];
-                    Console.WriteLine(estado);
+                    // Console.WriteLine(estado);
                 }
                 else{
                     string valor = "0";
@@ -296,7 +292,7 @@ namespace Lexico_3
                         }
                         else {
                             estado = int.Parse(valor);
-                            Console.WriteLine(estado);
+                            // Console.WriteLine(estado);
                         }
 
                         // Console.WriteLine(sl.GetCellValueAsInt32(5, 6));
@@ -304,7 +300,6 @@ namespace Lexico_3
                         break;
                     }
                 }
-                    // Clasifica(estado);
                 Clasifica(estado);
                 if (estado >= 0)
                 {
@@ -345,8 +340,7 @@ namespace Lexico_3
             log.WriteLine(getContenido() + " ····· " + getClasificacion());
             }
 
-            workbook.Close(false);
-            excelApp.Quit();
+           
         }
         public bool finArchivo()
         {
