@@ -1,18 +1,58 @@
-#include <stdio>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+static void Main(string[] args)
 {
-    230     // Numero entero
-    230e-30
-    230e+30
-    230.30e30
-    230.30e-30
-    230.30e+30  // Numero en formato cientifico
-    "hola mundo"
-    #64-'@'
-    /*
-        Hola mundo
-        ITQ
-    */
-    radio;<<>>!!====;&&&|||+++---+=-=**=/=%%=
-    ""
-    ''';
+    char c;
+    int  a,b,c,d;
+    int  i,k;
+
+    // a = (3 + 5) * 8 - (10 - 4) / 2; // 61
+
+    if (1 != 2)
+    {
+        Console.WriteLine("Ingrese el valor de d = ");
+        // d = Console.ReadLine();
+        if (d % 2 == 0)
+        {
+            for (i = 0; i < d; i++)
+            {
+                // Console.Write("*");
+            }
+            // Console.WriteLine();
+            i = 0;
+            do
+            {
+                // Console.Write("-");
+                i++;
+            } while (i < d);
+            i = 0;
+            // Console.WriteLine();
+            while (i < d)
+            {
+                // Console.Write("-");
+                i++;
+            }
+            for (i = d; i >= 0; i--)
+            {
+                // Console.Write(" - ");
+            }
+            // Console.WriteLine();
+            for (i = 0; i < d; i += 2)
+            {
+                for (j = 0; j <= i; j += 1)
+                {
+                    if (j % 2 == 0)
+                        // Console.Write("+");
+                        a=0;
+                    else
+                    a=0;
+                        // Console.Write("-");
+                }
+                // Console.Write();
+            }
+        }
+    }
 }

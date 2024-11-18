@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 
@@ -14,12 +15,14 @@ namespace Sintaxis_1
             try
             {
                 
-                using(Lexico T = new Lexico())
+                using(Lenguaje  L = new("prueba.cpp"))
                 {
-                    while(!T.finArchivo())
+                    /*while(!T.finArchivo())
                     {
                         T.nextToken();
                     }
+                    */
+                    L.Programa();
                 }
             }
             catch(Exception e)

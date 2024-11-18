@@ -13,7 +13,8 @@ namespace Sintaxis_1
             InicioBloque,FinBloque, OperadorTernario, 
             OperadorTermino, OperadorFactor, IncrementoTermino, 
             IncrementoFactor, Puntero, Asignacion, 
-            OperadorRelacional, OperadorLogico, Cadena
+            OperadorRelacional, OperadorLogico, Cadena,
+            TipoDato, PalabraReservada
         }
         private string contenido;
         private Tipos clasificacion;

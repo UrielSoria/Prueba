@@ -1,0 +1,66 @@
+Archivo: prueba.cpp
+Fecha de Compilación: 18/11/2024
+Hora de Compilación: 11:29:19
+using ····· Identificador
+Constructor Lenguaje
+System ····· Identificador
+; ····· FinSentencia
+using ····· Identificador
+System ····· Identificador
+. ····· Caracter
+Collections ····· Identificador
+. ····· Caracter
+Generic ····· Identificador
+; ····· FinSentencia
+using ····· Identificador
+System ····· Identificador
+. ····· Caracter
+Linq ····· Identificador
+; ····· FinSentencia
+using ····· Identificador
+System ····· Identificador
+. ····· Caracter
+Threading ····· Identificador
+. ····· Caracter
+Tasks ····· Identificador
+; ····· FinSentencia
+static ····· Identificador
+void ····· Identificador
+Main ····· Identificador
+( ····· Caracter
+string ····· Identificador
+[ ····· Caracter
+] ····· Caracter
+args ····· Identificador
+) ····· Caracter
+{ ····· InicioBloque
+char ····· TipoDato
+c ····· Identificador
+; ····· FinSentencia
+int ····· TipoDato
+a ····· Identificador
+, ····· Caracter
+b ····· Identificador
+, ····· Caracter
+c ····· Identificador
+, ····· Caracter
+d ····· Identificador
+; ····· FinSentencia
+int ····· TipoDato
+i ····· Identificador
+, ····· Caracter
+k ····· Identificador
+; ····· FinSentencia
+if ····· PalabraReservada
+( ····· Caracter
+1 ····· Numero
+!= ····· OperadorRelacional
+2 ····· Numero
+) ····· Caracter
+{ ····· InicioBloque
+Console ····· Identificador
+. ····· Caracter
+WriteLine ····· Identificador
+( ····· Caracter
+"Ingrese el valor de d = " ····· Cadena
+Error: Sintaxis: se espera un: )
