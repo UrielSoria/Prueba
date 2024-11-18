@@ -125,7 +125,12 @@ namespace Sintaxis_1
             match(Tipos.Identificador);
             if (getContenido() == "="){
                 match("=");
-                Expresion();
+                if(getContenido() =="Console"){
+                    console();
+                }
+                else{
+                    Expresion();
+                }
             }
             else if(getClasificacion() == Tipos.IncrementoTermino){
                 if(getContenido() == "++"){
@@ -235,39 +240,56 @@ namespace Sintaxis_1
         public void console(){
             match("Console");
             match(".");
-            if(getContenido() == "WriteLine"){
-                match("WriteLine");
-                match("(");
-                if(getContenido() == "\""){
+            switch(getContenido()){
+                case "WriteLine":
+                    match("WriteLine");
+                    match("(");
+                    if(getContenido() == ")"){
+                        match(")");
+                        match(";");
+                        break;
+                    }
+
+                    Console.WriteLine(getContenido().Trim('\"'));
                     match(Tipos.Cadena);
+                    match(")");
+                    match(";");
+                break;
+                case "Write":
+                    match("Write");
+                    match("(");
+                    if(getContenido() == ")"){
+                        match(")");
+                        match(";");
+                        break;
+                    }
+
+                    Console.Write(getContenido().Trim('\"'));
+                    match(Tipos.Cadena);
+                    match(")");
+                    match(";");
+                break;
+
+                case "ReadLine":
+                    match("ReadLine");
+                    match("(");
+                    match(")");
                     
-                }
-            match(")");
-            match(";");
+                    Console.ReadLine();
+                    match(";");
+                break;
+
+                case "Read":
+                    match("Read");
+                    match("(");
+                    match(")");
+                    
+                    Console.Read();
+                    match(";");
+                break;
             }
-            else if (getContenido() == "Write") {
-                match("Write");
-                match("(");
-                if(getContenido() == "\""){
-                    match(Tipos.Cadena);
-                }
-                match(")");
-                match(";");
-            }
-            if(getContenido() == "ReadLine"){
-                match("ReadLine");
-                match("(");
-                Console.ReadLine();
-                
-            }
-            else if(getContenido() == "Read"){
-                match("Read");
-                match("(");
-                Console.Read();
-                
-            }
-            match(")");
-            match(";");
+            
+           
             
         }
         // Main      -> static void Main(string[] args) BloqueInstrucciones 
