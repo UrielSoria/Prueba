@@ -5,59 +5,42 @@ using System.Threading.Tasks;
 
 static void Main(string[] args)
 {
-    char c;
-    int  a,b,c,d;
-    int  i,k;
+    int Console;
+   
 
-    
+    int a, b = Console.ReadLine();
+    a = (3 + 5) * 8 - (10 - 2*b) / b; // 61
+    // a--;
+    // a+=40;
+    // a*=2;
+    // a--;
+    // a-=99;
 
-    a = (3 + 5) * 8 - (10 - 4) *2; // hay que poner el /2
-    // 61
+    int n = 5;
 
-    if (1 != 2)
-    {
-        Console.WriteLine("Ingrese el valor de d = ");
-        d = Console.ReadLine();;
-        if (d % 2 == 0)
-        {
-            for (i = 0; i < d; i++)
-            {
-                Console.Write("*");
-            }
-            Console.WriteLine();
-            i = 0;
-            do
-            {
-                Console.Write("-");
-                i++;
-            } while (i < d);
-            i = 0;
-            Console.WriteLine();
-            while (i < d)
-            {
-                Console.Write("-");
-                
-                i++;
-            }
-            for (i = d; i >= 0; i--)
-            {
-                Console.Write(" - ");
-            }
-            Console.WriteLine();
-            for (i = 0; i < d; i += 2)
-            {
-                for (j = 0; j <= i; j += 1)
-                {
-                    if (j % 2 == 0)
-                        Console.Write("+");
-                    else
-                    a=0;
-                    
-                    
-                        Console.Write("-");
-                }
-                Console.Write();
+    for(b = 100; a < n; a++) {
+        b++;
+        while( b != 5 ) {
+            if(4 == 5) {
+                Console.WriteLine("n es igual a 5");
+            } else {
+                Console.WriteLine("n es diferente de 5");
             }
         }
     }
+
+    if(a % 2 == 0) {
+        Console.WriteLine("Es par " + a + " " +  b);
+        if(b == 3) {
+            Console.WriteLine("b es igual a 2");
+
+        if(b > 3) {
+            Console.WriteLine("b es mayor a 3");
+        }
+      } else {
+            Console.WriteLine("b no es igual a 3");
+      }
+    } else {
+        Console.WriteLine("Es impar");
+  }
 }

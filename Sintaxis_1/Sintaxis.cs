@@ -19,7 +19,7 @@ namespace Sintaxis_1
                 nextToken();
             }
             else{
-                 throw new Error("Sintaxis: se espera un: " + contenido, log);
+                 throw new Error("Sintaxis: se espera un: " + contenido, log, linea, col);
             }
         }
         public void match(Tipos tipo){
@@ -27,7 +27,7 @@ namespace Sintaxis_1
                 nextToken();
             }
             else{
-                throw new Error("Sintaxis: se espera un tipo: " + tipo);
+                throw new Error("Sintaxis: se espera un tipo: " + tipo, log, linea, col);
             }
         }
     }
