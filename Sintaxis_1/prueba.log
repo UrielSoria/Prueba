@@ -1,6 +1,6 @@
 Archivo: prueba.cpp
-Fecha de Compilación: 01/12/2024
-Hora de Compilación: 22:57:53
+Fecha de Compilación: 02/12/2024
+Hora de Compilación: 12:07:07
 using ····· Identificador
 System ····· Identificador
 ; ····· FinSentencia
@@ -34,13 +34,8 @@ args ····· Identificador
 ) ····· Caracter
 { ····· InicioBloque
 int ····· TipoDato
-Console ····· Identificador
-; ····· FinSentencia
-int ····· TipoDato
 a ····· Identificador
 , ····· Caracter
 b ····· Identificador
 = ····· Asignacion
 Console ····· Identificador
-. ····· Caracter
-Error: Sintaxis: se espera un: ; en la linea: 11 en la col: 21

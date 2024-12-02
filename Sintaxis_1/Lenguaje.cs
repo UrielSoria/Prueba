@@ -107,6 +107,7 @@ namespace Sintaxis_1
         // ListaIdentificadores -> identificador (,ListaIdentificadores)?
         private void ListaIdentificadores(Variable.TipoDato t)
         {
+            //Console.WriteLine(getContenido());
             if (l.Find(Variable => Variable.getNombre() == getContenido())!=null){
                 throw new Error("Sintaxis: la variable " + getContenido() +" ya existe", log, linea, col);
             }
@@ -116,6 +117,10 @@ namespace Sintaxis_1
             if(getContenido() == ","){
                 match(",");
                 ListaIdentificadores(t);
+            }
+            else if(getContenido() == "="){
+                match("=");
+                Expresion();
             }
         }
         // BloqueInstrucciones -> { listaIntrucciones? }
@@ -167,6 +172,7 @@ namespace Sintaxis_1
         }
         // Asignacion -> Identificador = Expresion;
         private void Asignacion(){
+            Console.WriteLine(getContenido());
             Variable? v = l.Find(variable => variable.getNombre() == getContenido());
             if(v == null) {
                 throw new Error("La variable " + getContenido() + " no está definida");
@@ -219,15 +225,41 @@ namespace Sintaxis_1
                 else if(getContenido() == "+="){
                     match("+=");
                     Expresion();
+                    // float nuevoValor = s.Pop();
+                    v.setValor(v.getValor() + s.Pop());
                 }
                 else if(getContenido() == "-="){
                     match("-=");
                     Expresion();
+                    float nuevoValor = v.getValor();
+                    nuevoValor = -s.Pop();
+                    v.setValor(nuevoValor);
                 }
             }
             else if(getClasificacion() == Tipos.IncrementoFactor){
-                match(Tipos.IncrementoFactor);
-                Expresion();
+                if(getContenido() == "/="){
+                    match("/=");
+                    Expresion();
+                    float nuevoValor = v.getValor();
+                    nuevoValor = nuevoValor /s.Pop();
+                    v.setValor(nuevoValor);
+                }
+                else if(getContenido() == "%="){
+                    match("%=");
+                    Expresion();
+                    float nuevoValor = v.getValor();
+                    nuevoValor = nuevoValor %s.Pop();
+                    v.setValor(nuevoValor);
+                }
+                else if(getContenido() == "*="){
+                    match("*=");
+                    Expresion();
+                    float nuevoValor = v.getValor();
+                    nuevoValor = nuevoValor *s.Pop();
+                    v.setValor(nuevoValor);
+                }
+               
+                
                 
             }
             float r = s.Pop();
@@ -238,31 +270,29 @@ namespace Sintaxis_1
         // If -> if (Condicion) bloqueInstrucciones | instruccion
          // (else bloqueInstrucciones | instruccion)?
         public void If(bool execute2){
+            
             match("if");
             match("(");
             bool execute = Condicion() && execute2;
             Console.WriteLine(execute);
             match(")");
-            if (execute2 == true)
-            {   
+              
                 if(getContenido() == "{"){
-                    BloqueInstrucciones(true);
+                    BloqueInstrucciones(execute);
                 }
                 else{
-                    Instruccion(true);
+                    Instruccion(execute);
                 }
-            }
-            else
-            {
+                
                 if(getContenido() == "else"){
                     match("else");
                     if(getContenido() == "{"){
-                        BloqueInstrucciones(true);
+                        BloqueInstrucciones(!execute);
                     }
                     else{
-                        Instruccion(true);
+                        Instruccion(execute);
                 }
-            }
+            
             }
             
         }
@@ -468,7 +498,7 @@ namespace Sintaxis_1
             else if(getClasificacion() == Tipos.Identificador){
                 Variable? v = l.Find(variable => variable.getNombre() == getContenido());
             if(v == null) {
-                throw new Error("La variable " + getContenido() + " no está definida");
+                throw new Error("La variable " + getContenido() + " no está declarada");
             }
             
                 s.Push(v.getValor());

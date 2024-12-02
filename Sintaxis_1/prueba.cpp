@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 static void Main(string[] args)
 {
-    int Console;
+    
    
 
     int a, b = Console.ReadLine();
     a = (3 + 5) * 8 - (10 - 2*b) / b; // 61
-    // a--;
-    // a+=40;
-    // a*=2;
-    // a--;
-    // a-=99;
+    a--;
+    a+=40;
+    a*=2;
+    a--;
+    a-=99;
 
     int n = 5;
 
