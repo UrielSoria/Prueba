@@ -343,7 +343,7 @@ namespace Sintaxis_1
             if (!finArchivo())
             {
             setContenido(buffer);
-            log.WriteLine(getContenido() + " ····· " + getClasificacion());
+            // log.WriteLine(getContenido() + " ····· " + getClasificacion());
             }
 
            

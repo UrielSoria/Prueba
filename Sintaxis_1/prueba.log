@@ -1,41 +1,8 @@
 Archivo: prueba.cpp
-Fecha de Compilación: 02/12/2024
-Hora de Compilación: 12:07:07
-using ····· Identificador
-System ····· Identificador
-; ····· FinSentencia
-using ····· Identificador
-System ····· Identificador
-. ····· Caracter
-Collections ····· Identificador
-. ····· Caracter
-Generic ····· Identificador
-; ····· FinSentencia
-using ····· Identificador
-System ····· Identificador
-. ····· Caracter
-Linq ····· Identificador
-; ····· FinSentencia
-using ····· Identificador
-System ····· Identificador
-. ····· Caracter
-Threading ····· Identificador
-. ····· Caracter
-Tasks ····· Identificador
-; ····· FinSentencia
-static ····· Identificador
-void ····· Identificador
-Main ····· Identificador
-( ····· Caracter
-string ····· Identificador
-[ ····· Caracter
-] ····· Caracter
-args ····· Identificador
-) ····· Caracter
-{ ····· InicioBloque
-int ····· TipoDato
-a ····· Identificador
-, ····· Caracter
-b ····· Identificador
-= ····· Asignacion
-Console ····· Identificador
+Fecha de Compilación: 03/12/2024
+Hora de Compilación: 12:33:44
+
+Lista de varibles: 
+b Int 101
+a Int 101
+n Int 5
