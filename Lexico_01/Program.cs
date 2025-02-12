@@ -16,15 +16,10 @@ namespace Lexico_01
             {
                 using(Lexico T = new Lexico())
                 {
-                   
-                    
-                    
                     while(!T.finArchivo())
                     {
                         T.nextToken();
-                    }
-                    
-                   
+                    }  
                 }
             }
             catch(Exception e)

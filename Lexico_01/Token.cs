@@ -14,7 +14,7 @@ namespace Lexico_01
             OperadorTermino, OperadorFactor, IncrementoTermino, 
             IncrementoFactor, Puntero, Asignacion, 
             OperadorRelacional, OperadorLogico, Moneda,
-            Cadena
+            Cadena, Adn
         }
         private string contenido;
         private Tipos clasificacion;

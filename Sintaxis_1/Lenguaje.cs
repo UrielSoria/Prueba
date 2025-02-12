@@ -13,14 +13,13 @@ Requerimeintos:
 5. Emular el Console.Reed() y Console.ReedLine()
 
 Requerimientos proyecto 6:
-1. Concatenaciones - creo que sí
-2. Inicializar variables - maybe, se hizo
+1. Concatenaciones - en clase
+2. Inicializar variables - maybe, en clase
 3. Evaluar una expresion matematica - se supone que sí (se hizo en clase)
-4. Condicion, Asignacion - falta
-5. levantar una excepcion si en el Read(), no ingresan numeros - falta
-6. modificar la varibale con el resto de los operadores (incremento factor y termino - falta
-7. Condicion else - falta
-Ultimo requerimiento el else - falta
+4. Condicion, Asignacion - falta listo
+5. levantar una excepcion si en el Read(), no ingresan numeros - falta listo
+6. modificar la varibale con el resto de los operadores (incremento factor y termino - falta listo
+7. Condicion else - falta listo
 */
 namespace Sintaxis_1
 {

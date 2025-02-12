@@ -15,6 +15,7 @@ namespace Lexico_1
 {
     public class Lexico : Token, IDisposable
     {
+        string PATH = "C:/Users/uriso/C#/Lexico_1/";
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
@@ -24,13 +25,13 @@ namespace Lexico_1
         {
             linea = 1;
             //Como contar lineas c#
-            log = new StreamWriter("prueba.log");
-            asm = new StreamWriter("prueba.asm");
+            log = new StreamWriter(PATH + "test.log");
+            asm = new StreamWriter(PATH + "prueba.asm");
             log.AutoFlush = true;
             asm.AutoFlush = true;
-            if( File.Exists("prueba.cpp"))
+            if( File.Exists(PATH + "prueba.cpp"))
             {
-            archivo = new StreamReader("pueba.cpp");   
+            archivo = new StreamReader(PATH + "prueba.cpp");   
             }
             else
             {
@@ -100,9 +101,13 @@ namespace Lexico_1
             {
                 setClasificacion(Tipos.OperadorTernario);
             }
-            else if (c == '+' | c == '-')
+            else if (c == '+' ||  c == '-')
             {
                 setClasificacion(Tipos.OperadorTermino);
+            }
+            else if (c == '*' || c == '%' || c == '/')
+            {
+                setClasificacion(Tipos.OperadorFactor);
             }
             else
             {

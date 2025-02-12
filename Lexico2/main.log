@@ -14,32 +14,4 @@ stdio ····· Identificador
 #64 ····· Caracter
 - ····· OperadorTermino
 '@' ····· Caracter
-radio ····· Identificador
-; ····· FinSentencia
-< ····· OperadorRelacional
-<> ····· OperadorRelacional
-> ····· OperadorRelacional
-! ····· OperadorLogico
-!= ····· OperadorRelacional
-== ····· OperadorRelacional
-= ····· Asignacion
-; ····· FinSentencia
-&& ····· OperadorLogico
-& ····· Caracter
-|| ····· OperadorLogico
-| ····· Caracter
-++ ····· IncrementoTermino
-+ ····· OperadorTermino
--- ····· IncrementoTermino
-- ····· OperadorTermino
-+= ····· IncrementoTermino
--= ····· IncrementoTermino
-* ····· OperadorFactor
-*= ····· IncrementoFactor
-/= ····· IncrementoFactor
-% ····· OperadorFactor
-%= ····· IncrementoFactor
-"" ····· Cadena
-' ' ····· Caracter
-; ····· FinSentencia
-} ····· FinBloque
+Error: Lexico, no se ha cerrado el comentario de bloque en la linea: 19

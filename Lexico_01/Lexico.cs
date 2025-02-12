@@ -82,16 +82,31 @@ namespace Lexico_01
                     linea++;
                 }
             }
+            // Console.WriteLine(c);
             buffer+=c;
-            
-            if(char.IsLetter(c))
-            {
-                setClasificacion(Tipos.Identificador);
-                while(char.IsLetterOrDigit(c=(char)archivo.Peek()))
-                {
+            if(c == 'C' || c == 'G' ||c == 'T'||c == 'A' ){
+                setClasificacion(Tipos.Adn);
+                
+                // archivo.Read();
+                
+                while((c=(char)archivo.Peek()) == 'G' ||(c=(char)archivo.Peek()) == 'A' || (c=(char)archivo.Peek()) == 'T' ||(c=(char)archivo.Peek()) == 'C'  ){
                     buffer+=c;
                     archivo.Read();
                 }
+                
+            }
+          
+            else if(char.IsLetter(c))
+            {
+                
+                
+                    setClasificacion(Tipos.Identificador);
+                    while(char.IsLetterOrDigit(c=(char)archivo.Peek()))
+                    {
+                        buffer+=c;
+                        archivo.Read();
+                    }
+                // }
             }
             //Numero
             else if(char.IsDigit(c))
@@ -132,7 +147,7 @@ namespace Lexico_01
                     if ((c=(char)archivo.Peek()) == '+' || (c=(char)archivo.Peek())== '-')
                     {
                         buffer+=c;
-                        setClasificacion(Tipos.Numero);
+
                         archivo.Read();
                         if(char.IsDigit(c=(char)archivo.Peek()))
                         {
@@ -255,6 +270,7 @@ namespace Lexico_01
                     archivo.Read();
                     
                 }
+             
             }
             else if(c == '>')
             {
@@ -303,7 +319,8 @@ namespace Lexico_01
             {
                 setClasificacion(Tipos.Caracter);
                 if(char.IsDigit(c=(char)archivo.Peek()))
-                {setClasificacion(Tipos.Moneda);
+                {
+                    setClasificacion(Tipos.Moneda);
                    while(char.IsDigit(c=(char)archivo.Peek()))
                 {
                     buffer+=c;
@@ -343,35 +360,35 @@ namespace Lexico_01
             else if(c == '\'')
             {
                 setClasificacion(Tipos.Caracter);
-                while((c=(char)archivo.Peek()) != '\'')
-                {
-                    buffer+=c;
-                    archivo.Read();
-                    if ((c=(char)archivo.Peek()) == '\'')
+                // c = (char)archivo.Peek();
+               
+                c = (char)archivo.Read();
+                buffer+=c;
+                
+                char nextc = (char)archivo.Peek();
+                
+                // Console.WriteLine(nextc);
+                    if (nextc == '\'')
                     {
                         buffer+=c;
                         archivo.Read();
-                        break;
+                        
                     }
-                    else
-                    {
+                    else {
                         throw new Error("Caracter invalido", log, linea);
-                    } 
-                }
+                    }
+                
             }
+          
      
             else
             {
                 setClasificacion(Tipos.Caracter);
             }
-            if(!finArchivo())
-            {
-                setContenido(buffer);
-                log.WriteLine(getContenido() + " = " + getClasificacion());
-                
-            }
+          
+            setContenido(buffer);
+            log.WriteLine(getContenido() + " = " + getClasificacion());
 
-            
         }
         public bool finArchivo()
         {
