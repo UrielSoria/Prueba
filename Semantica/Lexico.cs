@@ -12,9 +12,9 @@ namespace Semantica
 {
     public class Lexico : Token, IDisposable
     {
-        string PATH = "C:/Users/uriso/C#/Sintaxis/";
+        // string PATH = "C:/Users/uriso/C#/Sintaxis/";
         StreamReader archivo;
-        protected StreamWriter log;
+        public static StreamWriter log = null!;
         protected StreamWriter asm;
         public static int linea = 1;
         public static int col = 0;
@@ -61,59 +61,40 @@ namespace Semantica
                 { 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36  },
                 { 36, 36, 36, 36, 36, 36, 35, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36,  0, 36, 36, 36  }
             };
-        public Lexico()
-        {  
-            log = new StreamWriter("./prueba.log");
-            asm = new StreamWriter(PATH + "prueba.asm");
-            log.AutoFlush = true;
-            asm.AutoFlush = true;
-            
-            if( File.Exists(PATH + "prueba.cpp"))
+        
+
+        
+        public Lexico(string fileName="prueba.cpp")
+        {
+            if( File.Exists(fileName))
             {
-            archivo = new StreamReader(PATH + "prueba.cpp");  
+                archivo = new StreamReader(fileName);   
+
+                string fileNameWithoutExtension;
+                fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                log = new StreamWriter( fileNameWithoutExtension + ".log");
+                log.AutoFlush = true;
+                
+                if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
+                {
+                    asm = new StreamWriter(fileNameWithoutExtension + ".asm");
+                    asm.AutoFlush = true;
+                    
+                }
+                else
+                {
+                    throw new Error("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
+                }
+                log.WriteLine("Archivo: " + fileName);
+                DateTime fecha = DateTime.Now;
+                log.WriteLine("Fecha de Compilación: " + fecha.ToString("d"));
+                log.WriteLine("Hora de Compilación: " + fecha.ToString("HH:mm:ss"));
             }
             else
             {
                 throw new Error("El archivo prueba.cpp no existe", log);
             }
-            
-        }
-
-        
-        public Lexico(string fileName="Holamundo")
-        {
-            string fileNameWithoutExtension;
-            fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-            log = new StreamWriter( fileNameWithoutExtension + ".log");
-            log.AutoFlush = true;
-            
-
-            if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
-            {
-                
-                asm = new StreamWriter(fileNameWithoutExtension + ".asm");
-                asm.AutoFlush = true;
-                if( File.Exists(fileName))
-                {
-                archivo = new StreamReader(fileName);   
-                
-                }
-                else
-                {
-                    throw new Error("El archivo prueba.cpp no existe", log);
-                }
-            }
-            else
-            {
-                throw new Error("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
-            }
-            log.WriteLine("Archivo: " + fileName);
-            DateTime fecha = DateTime.Now;
-            log.WriteLine("Fecha de Compilación: " + fecha.ToString("d"));
-            log.WriteLine("Hora de Compilación: " + fecha.ToString("HH:mm:ss"));
             // Console.WriteLine("Archivo: " + fileName); 
-            
-
         }
         
         

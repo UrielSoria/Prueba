@@ -15,24 +15,21 @@ namespace Semantica
         TipoDato tipo;
         string nombre;
         float valor;
-
+        
         public Variable(TipoDato tipo, string nombre, float valor = 0){
             this.tipo = tipo;
             this.nombre = nombre;
             this.valor = valor;
-
         }
 
         
         public void setValor(float valor){
-            
-           
             //Validar
             if(valorToTipoDato(valor) <= tipo){
                 this.valor = valor;
             }            
             else{
-                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo + ", linea:" + Lexico.linea + ", columna: " + Lexico.col);
+                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo + ", linea:" + Lexico.linea + ", columna: " + Lexico.col, Lexico.log);
             }
         }
 
@@ -41,14 +38,14 @@ namespace Semantica
         public void setValor(float valor, Variable.TipoDato maximoTipo){
             
             if(tipo < maximoTipo){
-                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo + ", linea:" + Lexico.linea + ", columna: " + Lexico.col);
+                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo + ", linea:" + Lexico.linea + ", columna: " + Lexico.col, Lexico.log);
             }
             //Validar
             if(valorToTipoDato(valor) <= tipo){
                 this.valor = valor;
             }            
             else{
-                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo);
+                throw new Error("Semantico: No es posible asignar un " + valorToTipoDato(valor) + " a un "+ tipo, Lexico.log);
             }
             
         }
