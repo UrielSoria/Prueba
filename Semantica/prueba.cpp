@@ -17,7 +17,7 @@ static void Main(string[] args)
   //char + float = float -> Error
   a = 1;
   float c = 3;
-  a = a + c; //Error
+  // a = a + c; //Error
   // a = (int) (a + c); //Error
   a = (char) (a + c); //Bien
 

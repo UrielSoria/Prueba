@@ -164,7 +164,7 @@ namespace Semantica
                 else
                 {
                     Expresion();
-                    v?.setValor(s.Pop());
+                    v?.setValor(s.Pop(), maximoTipo);
                 }
 
             }
@@ -329,7 +329,7 @@ namespace Semantica
                     Expresion();
                     float nuevoValor = v.getValor();
                     nuevoValor = nuevoValor % s.Pop();
-                    v.setValor(nuevoValor);
+                    v.setValor(nuevoValor, maximoTipo);
                 }
                 else if (Contenido == "*=")
                 {
@@ -337,7 +337,7 @@ namespace Semantica
                     Expresion();
                     float nuevoValor = v.getValor();
                     nuevoValor = nuevoValor * s.Pop();
-                    v.setValor(nuevoValor);
+                    v.setValor(nuevoValor, maximoTipo);
                 }
 
 

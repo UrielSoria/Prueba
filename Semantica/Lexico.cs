@@ -66,16 +66,14 @@ namespace Semantica
         
         public Lexico(string fileName="prueba.cpp")
         {
+            string fileNameWithoutExtension;
+            fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+            log = new StreamWriter( fileNameWithoutExtension + ".log");
+            log.AutoFlush = true;
             if( File.Exists(fileName))
             {
                 archivo = new StreamReader(fileName);   
-
-                string fileNameWithoutExtension;
-                fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-                log = new StreamWriter( fileNameWithoutExtension + ".log");
-                log.AutoFlush = true;
-                
-                if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
+                if(Path.GetExtension(fileName).ToLower() == ".cpp")
                 {
                     asm = new StreamWriter(fileNameWithoutExtension + ".asm");
                     asm.AutoFlush = true;
@@ -92,7 +90,7 @@ namespace Semantica
             }
             else
             {
-                throw new Error("El archivo prueba.cpp no existe", log);
+                throw new Error("El archivo" + fileName + " no existe", log);
             }
             // Console.WriteLine("Archivo: " + fileName); 
         }
