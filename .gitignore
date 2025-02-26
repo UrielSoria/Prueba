@@ -2,3 +2,9 @@
 Semantica/bin/Debug/net9.0/Semantica.dll
 
 Semantica/obj/Debug/net9.0/apphost.exe
+ASM/ASM.csproj
+**.csproj**
+obj/
+ASM.sln/
+ASM.sln/
+ASM/ASM.sln
