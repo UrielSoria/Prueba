@@ -1,39 +1,12 @@
-segment .text
-global main
-main:
- MOV AX,3
- PUSH EAX
- MOV AX,5
- PUSH EAX
- POP EBX
- POP EAX
- ADD EAX,EBX
- PUSH EAX
- MOV AX,8
- PUSH EAX
- MOV AX,10
- PUSH EAX
- MOV AX,4
- PUSH EAX
- POP EBX
- POP EAX
- SUB EAX, EBX
- PUSH EAX
- POP EBX
- POP EAX
- SUB EAX, EBX
- PUSH EAX
- MOV AX,2
- PUSH EAX
- POP EBX
- POP EAX
- DIV EBX
- PUSH EAX
- POP EBX
- POP EAX
- ADD EAX,EBX
- PUSH EAX
-     POP EAX
-     MOV [x26], EAX
-     section .data
-x26 dw ?
+;Fecha de Compilación: 04/03/2025
+;Hora de Compilación: 12:01:21
+SEGMENT .TEXT
+GLOBAL MAIN
+MAIN:
+	mov eax,6
+	push eax 
+tpop eax
+	PRINT_DEC 
+	RET
+         section .data
+x26 dd 0

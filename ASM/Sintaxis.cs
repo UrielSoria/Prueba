@@ -7,27 +7,34 @@ namespace ASM
 {
     public class Sintaxis : Lexico
     {
-        public Sintaxis() : base(){
-            nextToken();
-        }
-        public Sintaxis(string name) : base(name)
+        public Sintaxis() : base()
         {
             nextToken();
         }
-        public void match(string contenido){
-            if (contenido == Contenido){
+        public Sintaxis(string nombre) : base(nombre)
+        {
+            nextToken();
+        }
+        public void match(string contenido)
+        {
+            if (contenido == Contenido)
+            {
                 nextToken();
             }
-            else{
-                 throw new Error("Sintaxis: se espera un: " + contenido, log, linea, col);
+            else
+            {
+                throw new Error("Sintaxis. Se espera un " + contenido, log, linea, columna);
             }
         }
-        public void match(Tipos tipo){
-            if (tipo == Clasificacion){
+        public void match(Tipos clasificacion)
+        {
+            if (clasificacion == Clasificacion)
+            {
                 nextToken();
             }
-            else{
-                throw new Error("Sintaxis: se espera un tipo: " + tipo, log, linea, col);
+            else
+            {
+                throw new Error("Sintaxis. Se espera un " + clasificacion, log, linea, columna);
             }
         }
     }

@@ -1,34 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
-
 
 namespace ASM
 {
-    class Program
+    public class Program : Token
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             try
             {
                 
-                using(Lenguaje  L = new("prueba.cpp"))
+                using (Lenguaje lexico = new("prueba.cpp"))
                 {
-                    /*while(!T.finArchivo())
-                    {
-                        T.nextToken();
-                    }
-                    */
-                    L.Programa();
+                    lexico.Programa(true);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Console.WriteLine("Error: " +e.Message);
-            }    
+                Console.WriteLine("Error: " + e.Message);
+            }
         }
     }
 }

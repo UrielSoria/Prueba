@@ -8,3 +8,11 @@ obj/
 ASM.sln/
 ASM.sln/
 ASM/ASM.sln
+ASM/prueba.asm
+ASM/prueba.cpp
+ASM/prueba.log
+ASM/prueba.o
+ASM/bin/Debug/net9.0/ASM.pdb
+ASM/bin/Debug/net9.0/ASM.exe
+ASM/bin/Debug/net9.0/ASM.dll
+ASM/prueba.asm

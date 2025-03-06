@@ -15,9 +15,8 @@ static void Main(string[] args)
   }
 }
   /*/
-  int x26 = 6;
+  int x26 = (3+5) + (8 - (10-4))/2;
     
-  Console.WriteLine(x26);
   
   
   
@@ -107,4 +106,3 @@ static void Main(string[] args)
   } else {
     Console.WriteLine("Es impar");
   }*/
-}
