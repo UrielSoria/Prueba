@@ -89,9 +89,9 @@ namespace ASM
                 asm.WriteLine(";Fecha de Compilación: " + fecha.ToString("d"));
                 asm.WriteLine(";Hora de Compilación: " + fecha.ToString("HH:mm:ss"));
                 //Encabezado en Ensamblador
-                asm.WriteLine("SEGMENT .TEXT");
-                asm.WriteLine("GLOBAL MAIN");
-                asm.WriteLine("MAIN:");
+                asm.WriteLine("segment .text");
+                asm.WriteLine("global main");
+                asm.WriteLine("main:");
                 
                 
             }

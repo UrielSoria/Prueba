@@ -15,9 +15,12 @@ static void Main(string[] args)
   }
 }
   /*/
-  int x26 = 6;
-    
-  Console.WriteLine(x26);
+  int x26 = (3+5)*8-(10-4)/2;
+  if(x26==61){
+    Console.WriteLine("El resultado es 61");
+  }
+  // int a=3;
+  // Console.WriteLine(x26);
   
   
   

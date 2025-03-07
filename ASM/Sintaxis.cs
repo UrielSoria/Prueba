@@ -7,11 +7,11 @@ namespace ASM
 {
     public class Sintaxis : Lexico
     {
-        public Sintaxis() : base()
-        {
-            nextToken();
-        }
-        public Sintaxis(string nombre) : base(nombre)
+        // public Sintaxis() : base()
+        // {
+        //     nextToken();
+        // }
+        public Sintaxis(string nombre = "prueba.cpp") : base(nombre)
         {
             nextToken();
         }

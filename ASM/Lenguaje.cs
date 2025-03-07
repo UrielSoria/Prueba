@@ -1,21 +1,21 @@
 /*
 
     unidad 2
-    L 1. declarar las variables en ensamblador con su tipo de dato 
-    L 2. En asignación generar codigo en ensamblador para ++(inc) y --(dec) 
-    L 3, En asignación generar codigo en ensamblador para +=, -=, %=
+        L 1. declarar las variables en ensamblador con su tipo de dato 
+        L 2. En asignación generar codigo en ensamblador para ++(inc) y --(dec) 
+        L 3, En asignación generar codigo en ensamblador para +=, -=, %=
     4. generar codigo en ensamblador para console.Write y console.WriteLine
     //hoy modificación de concatenaciones
     5. generar codigo en ensamblador para Read y ReadLine
     done. programar el Do
     6. programar el while
     7. programar el for
-    L recordatorio: condicionar todos los set valor en asignacion (if(execute))
+        L recordatorio: condicionar todos los set valor en asignacion (if(execute))
     8. programar el else
-    L 9. Usar set y get en variable
-    //hoy
-    10. Ajustar todos los constructores con parametros por default
-    //hoy
+        L 9. Usar set y get en variable
+    
+        L 10. Ajustar todos los constructores con parametros por default
+    
    
 */
 
@@ -35,18 +35,12 @@ namespace ASM
         Stack<float> s;
         List<Variable> l;
         Variable.TipoDato maximoTipo;
-        public Lenguaje() : base()
+       
+        public Lenguaje(string nombre = "prueba.cpp") : base(nombre)
         {
             s = new Stack<float>();
             l = new List<Variable>();
             maximoTipo = Variable.TipoDato.Char;
-            log.WriteLine("Constructor lenguaje");
-            ifCounter = whileCounter = doWhileCounter = forCounter = 1;
-        }
-        public Lenguaje(string nombre) : base(nombre)
-        {
-            s = new Stack<float>();
-            l = new List<Variable>();
             log.WriteLine("Constructor lenguaje");
             ifCounter = whileCounter = doWhileCounter = forCounter = 1;
         }
@@ -185,7 +179,7 @@ namespace ASM
                     // Como no se ingresó un número desde el Console, entonces viene de una expresión matemática
                     Expresion();
                     float resultado = s.Pop();
-                    asm.WriteLine("tpop eax");
+                    asm.WriteLine("\tpop eax");
                     // sobrecarga
                     if (ejecuta)
                     {
@@ -314,7 +308,7 @@ namespace ASM
                     Console.WriteLine("Despues: " + maximoTipo);
                     r = s.Pop();
                     asm.WriteLine("\tpop eax");
-                    asm.WriteLine($"\tmov [{v.vNombre}],eax");
+                    asm.WriteLine($"\tmov dd[{v.vNombre}],eax");
                     // Requerimiento 4
 
                     Console.WriteLine("Despues: " + maximoTipo);
@@ -412,7 +406,8 @@ namespace ASM
             {
                 Instruccion(ejecuta);
             }
-            asm.WriteLine(label);
+            asm.WriteLine(";Etiqueta del If");
+            asm.WriteLine($"{label}:");
             if (Contenido == "else")
             {
                 match("else");
@@ -425,7 +420,8 @@ namespace ASM
                 {
                     Instruccion(ejecutarElse);
                 }
-                asm.WriteLine($"branco{label}:");
+                
+                asm.WriteLine($"{label}:");
             }
         }
         //Condicion -> Expresion operadorRelacional Expresion
@@ -462,7 +458,7 @@ namespace ASM
 
                         return valor1 <= valor2;
                     case "==":
-                        asm.WriteLine($"\tlne {label}");
+                        asm.WriteLine($"\tjne {label}");
                         return valor1 == valor2;
                     default:
                         asm.WriteLine($"\tje {label}");
