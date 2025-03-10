@@ -35,3 +35,6 @@ main:
  PUSH EAX
      POP EAX
      MOV [x26], EAX
+    ret
+     section .data
+x26 dw 0

@@ -14,11 +14,33 @@ static void Main(string[] args)
     while(x26<210)
   }
 }
-  /*/
-  int x26 = (3+5)*8-(10-4)/2;
-  if(x26==61){
-    Console.WriteLine("El resultado es 61");
+  /*
+  int j = 10/1;
+  int a = 4;
+
+  a %=3;
+  int b = 2;
+  b %=2;
+  */
+ int i;
+  for(i = 0; i <3; i++) {
+
   }
+  // Console.WriteLine(a);
+  // Console.WriteLine(b);
+
+
+  // int x26 = (3+5)*8-(10-4)/2;
+
+  // x26 ++;
+  // x26 --;
+  // x26 +=4;
+  // x26 -=4;
+  // x26 *=4;
+  // x26 /=4;
+  // if(x26==61){
+  //   Console.WriteLine("El resultado es 61");
+  // }
   // int a=3;
   // Console.WriteLine(x26);
   

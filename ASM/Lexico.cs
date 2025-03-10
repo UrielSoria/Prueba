@@ -92,6 +92,7 @@ namespace ASM
                 asm.WriteLine("segment .text");
                 asm.WriteLine("global main");
                 asm.WriteLine("main:");
+                asm.WriteLine("\tmov edx, 0");
                 
                 
             }

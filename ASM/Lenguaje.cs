@@ -10,7 +10,7 @@
     done. programar el Do
     6. programar el while
     7. programar el for
-        L recordatorio: condicionar todos los set valor en asignacion (if(execute))
+        L recordatorio: condicionar todos los set valor en asignacion Y LISTA(if(execute))
     8. programar el else
         L 9. Usar set y get en variable
     
@@ -107,6 +107,7 @@ namespace ASM
             match(Tipos.TipoDato);
             ListaIdentificadores(t, ejecuta);
             match(";");
+            // asm.WriteLine($"\tmov dword[{v!.vNombre}],eax");
             if (Clasificacion == Tipos.TipoDato)
             {
                 Variables(ejecuta);
@@ -179,7 +180,9 @@ namespace ASM
                     // Como no se ingresó un número desde el Console, entonces viene de una expresión matemática
                     Expresion();
                     float resultado = s.Pop();
+                    asm.WriteLine($";Asignacion de {v.vNombre}");
                     asm.WriteLine("\tpop eax");
+                    asm.WriteLine($"\tmov dword[{v.vNombre}], eax");
                     // sobrecarga
                     if (ejecuta)
                     {
@@ -282,6 +285,8 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
+                    asm.WriteLine($"; Incremento de {v.vNombre} ");
+                    asm.WriteLine($"\tinc dword [{v.vNombre}]");
                 }
             }
             else if (Contenido == "--")
@@ -291,6 +296,8 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
+                    asm.WriteLine($"; Decremento de {v.vNombre} ");
+                    asm.WriteLine($"\tdec dword [{v.vNombre}]");
                 }
             }
             else if (Contenido == "=")
@@ -308,7 +315,7 @@ namespace ASM
                     Console.WriteLine("Despues: " + maximoTipo);
                     r = s.Pop();
                     asm.WriteLine("\tpop eax");
-                    asm.WriteLine($"\tmov dd[{v.vNombre}],eax");
+                    asm.WriteLine($"\tmov dword[{v.vNombre}],eax");
                     // Requerimiento 4
 
                     Console.WriteLine("Despues: " + maximoTipo);
@@ -327,6 +334,9 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
+                    asm.WriteLine(";+=");
+                    asm.WriteLine("\tpop eax");
+                    asm.WriteLine($"\tadd dword[{v.vNombre}], eax");
                 }
             }
             else if (Contenido == "-=")
@@ -334,10 +344,13 @@ namespace ASM
                 match("-=");
                 Expresion();
                 r = v.varValor - s.Pop();
-                asm.WriteLine("   pop eax");
+                // asm.WriteLine("   pop eax");
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
+                    asm.WriteLine(";-=");
+                    asm.WriteLine("\tpop eax");
+                    asm.WriteLine($"\tsub dword[{v.vNombre}], eax");
                 }
             }
             else if (Contenido == "*=")
@@ -349,10 +362,12 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
+                    asm.WriteLine(";*=");
                     asm.WriteLine("\tpop eax");
                     asm.WriteLine($"\tmov ebx, [{v.vNombre}]");
                     asm.WriteLine($"\tmul ebx");
-                    asm.WriteLine($"\tmov [{v.vNombre}], ebx");
+                    asm.WriteLine($"\tpush eax");
+                    asm.WriteLine($"\tmov dword[{v.vNombre}], eax");
                 } //
             }
             else if (Contenido == "/=")
@@ -364,10 +379,11 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
-                    asm.WriteLine("\tpop eax");
-                    asm.WriteLine($"\tmov ebx, [{v.vNombre}]");
-                    asm.WriteLine($"\tdiv ebx");
-                    asm.WriteLine($"\tmov [{v.vNombre}], ebx");
+                    asm.WriteLine(";/=");
+                    asm.WriteLine("\tpop ebx");
+                    asm.WriteLine($"\tmov eax, [{v.vNombre}]");
+                    asm.WriteLine($"\tdiv bx");
+                    asm.WriteLine($"\tmov [{v.vNombre}], eax");
                 };
             }
             else if (Contenido == "%=")
@@ -379,9 +395,10 @@ namespace ASM
                 if (ejecuta)
                 {
                     v.setValor(r, maximoTipo);
-                    asm.WriteLine("\tpop eax");
-                    asm.WriteLine($"\tmov ebx, [{v.vNombre}]");
-                    asm.WriteLine($"\tdiv ebx");
+                    asm.WriteLine(";%=");
+                    asm.WriteLine("\tpop ebx");
+                    asm.WriteLine($"\tmov eax, [{v.vNombre}]");
+                    asm.WriteLine($"\tdiv bx");
                     asm.WriteLine($"\tmov [{v.vNombre}], edx");
                 };
             }
@@ -679,11 +696,13 @@ namespace ASM
                 {
                     case "+":
                         s.Push(n2 + n1);
+                        asm.WriteLine(";suma");
                         asm.WriteLine("    add eax, ebx");
                         asm.WriteLine("\tpush eax");
                         break;
                     case "-":
                         s.Push(n2 - n1);
+                        asm.WriteLine(";resta");
                         asm.WriteLine("    sub eax, ebx");
                         asm.WriteLine("\tpush eax");
                         break;
@@ -713,17 +732,21 @@ namespace ASM
                 {
                     case "*":
                         s.Push(n2 * n1);
+                        asm.WriteLine(";multiplicacion");
                         asm.WriteLine("\tmul ebx");
-                        asm.WriteLine("\tpop eax");
+                        asm.WriteLine("\tpush eax");
+                        // asm.WriteLine("\tpop eax");
                         break;
                     case "/":
                         s.Push(n2 / n1);
-                        asm.WriteLine("\tdiv ebx");
+                        asm.WriteLine(";division");
+                        asm.WriteLine("\tdiv bx");
                         asm.WriteLine("\tpush eax");
                         break;
                     case "%":
                         s.Push(n2 % n1);
-                        asm.WriteLine("\tdiv ebx");
+                        asm.WriteLine(";modulo");
+                        asm.WriteLine("\tdiv bx");
                         asm.WriteLine("\tpush edx");
                         break;
                 }
