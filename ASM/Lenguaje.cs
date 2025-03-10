@@ -7,9 +7,9 @@
     4. generar codigo en ensamblador para console.Write y console.WriteLine
     //hoy modificación de concatenaciones
     5. generar codigo en ensamblador para Read y ReadLine
-    done. programar el Do
+        done. programar el Do
     6. programar el while
-    7. programar el for
+        L programar el for
         L recordatorio: condicionar todos los set valor en asignacion Y LISTA(if(execute))
     8. programar el else
         L 9. Usar set y get en variable
@@ -286,7 +286,7 @@ namespace ASM
                 {
                     v.setValor(r, maximoTipo);
                     asm.WriteLine($"; Incremento de {v.vNombre} ");
-                    asm.WriteLine($"\tinc dword [{v.vNombre}]");
+                    asm.WriteLine($"\tinc dword[{v.vNombre}]");
                 }
             }
             else if (Contenido == "--")
@@ -554,11 +554,15 @@ namespace ASM
         BloqueInstrucciones | Intruccion*/
         private void For(bool ejecuta)
         {
+            asm.WriteLine(";for");
+            string label = $"brinco_for_{forCounter++}";
+            string JmpFor = $"For{forCounter++}";
             match("for");
             match("(");
             Asignacion(ejecuta);
             match(";");
-            Condicion("");
+            asm.WriteLine($"{JmpFor}:");
+            Condicion(label, false);
             match(";");
             Asignacion(ejecuta);
             match(")");
@@ -570,6 +574,9 @@ namespace ASM
             {
                 Instruccion(ejecuta);
             }
+            asm.WriteLine($"\tjmp {JmpFor}");
+            asm.WriteLine($"{label}:");
+            forCounter++;
         }
         //Console -> Console.(WriteLine|Write) (cadena? concatenaciones?);
         private void console(bool ejecuta)
@@ -783,7 +790,7 @@ namespace ASM
                     maximoTipo = v.vTipoDato;
                 }
                 s.Push(v.varValor);
-                asm.WriteLine("\tmov eax," + Contenido);
+                asm.WriteLine($"\tmov eax, dword[{v.vNombre}]");
                 asm.WriteLine("\tpush eax");
                 match(Tipos.Identificador);
             }

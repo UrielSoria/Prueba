@@ -17,3 +17,5 @@ ASM/bin/Debug/net9.0/ASM.exe
 ASM/prueba.asm
 ASM/bin/Debug/net9.0/ASM.dl
 
+ASM/prueba.log
+ASM/prueba.cpp

@@ -22,10 +22,12 @@ static void Main(string[] args)
   int b = 2;
   b %=2;
   */
- int i;
-  for(i = 0; i <3; i++) {
-
+  int a=0;
+  int i=0;
+  for(i; i <=10; i++) {
+    a++;
   }
+  // Console.WriteLine(a);
   // Console.WriteLine(a);
   // Console.WriteLine(b);
 
