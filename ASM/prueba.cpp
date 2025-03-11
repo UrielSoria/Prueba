@@ -24,8 +24,9 @@ static void Main(string[] args)
   */
   int a=0;
   int i=0;
-  for(i; i <=10; i++) {
+  while(i <=10) {
     a++;
+    i++;
   }
   // Console.WriteLine(a);
   // Console.WriteLine(a);

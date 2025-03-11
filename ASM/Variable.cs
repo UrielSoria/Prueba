@@ -67,7 +67,7 @@ namespace ASM
                 return TipoDato.Float;
             }
         }
-        public float varValor{
+        public float getValor{
             get => valor;
             // set => valor = value;
         }
@@ -76,7 +76,7 @@ namespace ASM
         //     return valor;
         // }
 
-        public string vNombre{
+        public string getNombre{
             get => nombre;
             // set => nombre = value;
         }
@@ -84,7 +84,7 @@ namespace ASM
         // {
         //     return nombre;
         // }
-        public TipoDato vTipoDato{
+        public TipoDato getTipoDato{
             get => tipo;
             // set => tipo = value; 
         }
