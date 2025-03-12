@@ -23,11 +23,12 @@ static void Main(string[] args)
   b %=2;
   */
   int a=0;
-  int i=0;
-  while(i <=10) {
-    a++;
-    i++;
-  }
+if(a==1){
+  a=200;
+}
+else if(a==0){
+  a=300;
+}
   // Console.WriteLine(a);
   // Console.WriteLine(a);
   // Console.WriteLine(b);

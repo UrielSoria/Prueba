@@ -8,7 +8,7 @@
     //hoy modificación de concatenaciones
     5. generar codigo en ensamblador para Read y ReadLine
         done. programar el Do
-    6. programar el while
+        L 6. programar el while
         L programar el for
         L recordatorio: condicionar todos los set valor en asignacion Y LISTA(if(execute))
     8. programar el else
@@ -412,7 +412,7 @@ namespace ASM
             match("(");
             asm.WriteLine(";    If");
             string label = $"brinco_if_{ifCounter++}";
-            bool ejecuta = Condicion(label) && ejecuta2;
+            bool ejecuta = Condicion(label,false) && ejecuta2;
             //Console.WriteLine(ejecuta);
             match(")");
             if (Contenido == "{")
@@ -429,6 +429,9 @@ namespace ASM
             {
                 match("else");
                 bool ejecutarElse = !ejecuta; // Solo se ejecuta el else si el if no se ejecutó
+                //Por la manera en que está hecho, no es necesario
+                //hacer un salto en el else, porque se hace por si mismo
+                asm.WriteLine("; Else");
                 if (Contenido == "{")
                 {
                     BloqueInstrucciones(ejecutarElse);
@@ -438,7 +441,7 @@ namespace ASM
                     Instruccion(ejecutarElse);
                 }
                 
-                asm.WriteLine($"{label}:");
+                // asm.WriteLine($"{label}:");
             }
         }
         //Condicion -> Expresion operadorRelacional Expresion
@@ -542,7 +545,7 @@ namespace ASM
         {
             match("do");
             asm.WriteLine("\t; Do");
-            string label = $"jmp_do_{ifCounter++}";
+            string label = $"jmp_do_{doWhileCounter++}";
             asm.WriteLine("\t; Do");
             if (Contenido == "{")
             {

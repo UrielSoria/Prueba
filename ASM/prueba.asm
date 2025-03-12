@@ -1,5 +1,5 @@
-;Fecha de Compilación: 11/03/2025
-;Hora de Compilación: 12:22:11
+;Fecha de Compilación: 12/03/2025
+;Hora de Compilación: 08:52:15
 segment .text
 global main
 main:
@@ -9,28 +9,39 @@ main:
 ;Asignacion de a
 	pop eax
 	mov dword[a], eax
-	mov eax,0
-	push eax 
-;Asignacion de i
-	pop eax
-	mov dword[i], eax
-;While
-While1:
-	mov eax, dword[i]
+;    If
+	mov eax, dword[a]
 	push eax
-	mov eax,10
+	mov eax,1
 	push eax 
 	pop ebx
 	pop eax
     cmp eax, ebx
-	ja brinco_While_1
-; Incremento de a 
-	inc dword[a]
-; Incremento de i 
-	inc dword[i]
-	jmp While1
-brinco_While_1:
+	jne brinco_if_1
+; Asignacion de a 
+	mov eax,200
+	push eax 
+	pop eax
+	mov dword[a],eax
+;Etiqueta del If
+brinco_if_1:
+; Else
+;    If
+	mov eax, dword[a]
+	push eax
+	mov eax,0
+	push eax 
+	pop ebx
+	pop eax
+    cmp eax, ebx
+	jne brinco_if_2
+; Asignacion de a 
+	mov eax,300
+	push eax 
+	pop eax
+	mov dword[a],eax
+;Etiqueta del If
+brinco_if_2:
 	RET
          section .data
 a dd 0
-i dd 0
