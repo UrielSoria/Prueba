@@ -63,8 +63,22 @@ namespace ASM
             foreach (Variable elemento in l)
             {
                 log.WriteLine($"{elemento.getNombre} {elemento.getTipoDato} {elemento.getValor}");
-                asm.WriteLine($"{elemento.getNombre} dd 0");
+                switch(elemento.getTipoDato){
+                    case Variable.TipoDato.Char: 
+                        asm.WriteLine(";char");
+                        asm.WriteLine($"{elemento.getNombre} db 0");
+                        break;
+                    case Variable.TipoDato.Int:
+                        asm.WriteLine(";int");
+                        asm.WriteLine($"{elemento.getNombre} dd 0");
+                        break;
+                    case Variable.TipoDato.Float:
+                        asm.WriteLine(";float");
+                        asm.WriteLine($"{elemento.getNombre} dq 0.0");
+                        break;
+                }
             }
+            
         }
 
         //Programa  -> Librerias? Variables? Main
@@ -152,6 +166,7 @@ namespace ASM
                         // sobrecarga
                         int r = Console.Read();
                         // Asignamos el último valor leído a la última variable detectada
+                        
                     }
                     else
                     {
@@ -164,13 +179,18 @@ namespace ASM
                             if (ejecuta)
                             {
                                 v.setValor(valor, maximoTipo);
+                              
                             }
+                              
                         }
+                        
                         else
                         {
                             throw new Error("Sintaxis. No se ingresó un número ", log, linea, columna);
                         }
+                        
                     }
+
                     match("(");
                     match(")");
                 }
@@ -306,19 +326,58 @@ namespace ASM
 
                 if (Contenido == "Console")
                 {
-                    ListaIdentificadores(v.getTipoDato, ejecuta); // Ya se hace este procedimiento arriba así que simplemente obtenemos a través del método lo que necesitamos
-                }
+                    //AQUI READ
+                   
+                        match("Console");
+                        match(".");
+                        if (Contenido == "Read")
+                        {
+                            match("Read");
+                            match("(");
+                        // sobrecarga
+                            int Read = Console.Read();
+                        // Asignamos el último valor leído a la última variable detectada
+                        }
+                    
+                        else
+                        {
+                        match("ReadLine");
+                        match("(");
+                        string? Read = Console.ReadLine();
+                        if (float.TryParse(Read, out float valor))
+                        {
+                            // sobrecarga
+                            // v.setValor(valor,maximoTipo);
+                            if (ejecuta)
+                            {
+                                v.setValor(valor, maximoTipo);
+                              
+                            }
+                            asm.WriteLine($"    GET_DEC 4,EAX");
+                            asm.WriteLine($"    mov dword[{v.getNombre}], EAX");
+                        }
+                        
+                        else
+                        {
+                            throw new Error("Sintaxis. No se ingresó un número ", log, linea, columna);
+                        }
+                        
+                    }
+                    match(")");
+                }                    
+                    
+                  
                 else
                 {
                     asm.WriteLine($"; Asignacion de {v.getNombre} ");
                     Expresion();
-                    Console.WriteLine("Despues: " + maximoTipo);
+                    // Console.WriteLine("Despues: " + maximoTipo);
                     r = s.Pop();
                     asm.WriteLine("\tpop eax");
                     asm.WriteLine($"\tmov dword[{v.getNombre}],eax");
                     // Requerimiento 4
 
-                    Console.WriteLine("Despues: " + maximoTipo);
+                    // Console.WriteLine("Despues: " + maximoTipo);
                     if (ejecuta)
                     {
                         v?.setValor(r, maximoTipo);
@@ -546,7 +605,7 @@ namespace ASM
             match("do");
             asm.WriteLine("\t; Do");
             string label = $"jmp_do_{doWhileCounter++}";
-            asm.WriteLine("\t; Do");
+            asm.WriteLine($"{label}:");
             if (Contenido == "{")
             {
                 BloqueInstrucciones(ejecuta);
@@ -566,8 +625,8 @@ namespace ASM
         private void For(bool ejecuta)
         {
             asm.WriteLine(";for");
-            string label = $"brinco_for_{forCounter}";
-            string JmpFor = $"For{forCounter}";
+            string label = $"brinco_for_{forCounter++}";
+            string JmpFor = $"For{forCounter++}";
             match("for");
             match("(");
             Asignacion(ejecuta);
@@ -587,11 +646,12 @@ namespace ASM
             }
             asm.WriteLine($"\tjmp {JmpFor}");
             asm.WriteLine($"{label}:");
-            forCounter++;
+            // forCounter++;
         }
         //Console -> Console.(WriteLine|Write) (cadena? concatenaciones?);
         private void console(bool ejecuta)
         {
+            float valor;
             bool isWriteLine = false;
             match("Console");
             match(".");
@@ -610,6 +670,7 @@ namespace ASM
             {
                 concatenaciones = Contenido.Trim('"');
                 match(Tipos.Cadena);
+                asm.WriteLine($"\tPRINT_STRING \"{concatenaciones}\"");
             }
             else
             {
@@ -620,14 +681,17 @@ namespace ASM
                 }
                 else
                 {
-                    concatenaciones = v.getValor.ToString();
+                    valor = v.getValor;
+                    concatenaciones = valor.ToString();
                     match(Tipos.Identificador);
+                    asm.WriteLine($"\tPRINT_DEC 4,{v.getNombre}");
                 }
             }
             if (Contenido == "+")
             {
                 match("+");
                 concatenaciones += Concatenaciones();  // Se acumula el resultado de las concatenaciones
+                // asm.WriteLine($"\tPRINT_STRING \"{concatenaciones}\"");
             }
             match(")");
             match(";");
@@ -638,12 +702,14 @@ namespace ASM
                 // hay que modificar concatenaciones
 
                     Console.WriteLine(concatenaciones);
+                    // String print =concatenaciones;
                     
-                    asm.WriteLine("\tPRINT_DEC ");
+                    asm.WriteLine("\tNEWLINE");
                 }
                 else
                 {
                     Console.Write(concatenaciones);
+                    // asm.WriteLine($"\tPRINT_STRING print ");
                 }
             }
         }
@@ -657,6 +723,9 @@ namespace ASM
                 if (v != null)
                 {
                     resultado = v.getValor.ToString(); // Obtener el valor de la variable y convertirla
+                    
+                    // asm.WriteLine($"\tmov dword[print], \"{resultado}\"");
+                    asm.WriteLine($"\tPRINT_DEC 4,{v.getNombre} ");
                 }
                 else
                 {
@@ -667,12 +736,18 @@ namespace ASM
             else if (Clasificacion == Tipos.Cadena)
             {
                 resultado = Contenido.Trim('"');
+                //hacer var con el contenido de resultado
+                // imprimir en el asm result 
+                // hacer lo mismo con el identificador y tambien con numeros
+                // asm.WriteLine($"\t PRINT_STRING {resultado}");
                 match(Tipos.Cadena);
+                asm.WriteLine($"\tPRINT_STRING \"{resultado}\"");
             }
             if (Contenido == "+")
             {
                 match("+");
                 resultado += Concatenaciones();  // Acumula el siguiente fragmento de concatenación
+                asm.WriteLine($"\tPRINT_STRING \"{resultado}\"");
             }
             return resultado;
         }
