@@ -1,12 +1,12 @@
 Archivo: prueba.cpp
 Fecha de Compilación: 19/03/2025
-Hora de Compilación: 10:37:38
+Hora de Compilación: 11:31:03
 Constructor lenguaje
 Lista de variables: 
-altura Int 5
-i Int 1
-j Int 2
-x Int 50
+altura Int 3
+i Int 0
+j Int 0
+x Int 0
 y Int 10
 z Int 2
 c Int 300
