@@ -9,32 +9,34 @@ namespace Sintaxis_1
     {
         public enum Tipos
         {
-            Identificador,Numero,Caracter,FinSentencia,
-            InicioBloque,FinBloque, OperadorTernario, 
-            OperadorTermino, OperadorFactor, IncrementoTermino, 
-            IncrementoFactor, Puntero, Asignacion, 
-            OperadorRelacional, OperadorLogico, Cadena,
-            TipoDato, PalabraReservada
+            Identificador, Numero, Caracter, FinSentencia,
+            InicioBloque, FinBloque, OperadorTernario,
+            OperadorTermino, OperadorFactor, IncrementoTermino,
+            IncrementoFactor, Puntero, Asignacion,
+            OperadorRelacional, OperadorLogico, Moneda,
+            Cadena, TipoDato, PalabraReservada, funcionMatematica
         }
         private string contenido;
         private Tipos clasificacion;
-        public Token(){
-            contenido = " ";
-            clasificacion = 0;
+        public Token()
+        {
+            contenido = "";
+            clasificacion = Tipos.Identificador;
         }
-
-        public void setContenido(string contenido){
+        public void setContenido(string contenido)
+        {
             this.contenido = contenido;
         }
-        public void setClasificacion(Tipos clasificacion){
+        public void setClasificacion(Tipos clasificacion)
+        {
             this.clasificacion = clasificacion;
         }
-
-        public string getContenido(){
+        public string getContenido()
+        {
             return this.contenido;
         }
-
-        public Tipos getClasificacion(){
+        public Tipos getClasificacion()
+        {
             return this.clasificacion;
         }
     }

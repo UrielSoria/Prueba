@@ -3,134 +3,103 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Runtime.InteropServices;
-
-
-
+using System.Data.Common;
+using System.IO.Compression;
+using Microsoft.VisualBasic;
 
 namespace Sintaxis_1
 {
     public class Lexico : Token, IDisposable
     {
-        string PATH = "C:/Users/uriso/C#/Sintaxis_1/";
-        StreamReader archivo;
-        protected StreamWriter log;
-        protected StreamWriter asm;
-        protected int linea = 1;
-        protected int col = 0;
-        
+        public StreamReader archivo;
+        public StreamWriter log;
+        public StreamWriter asm;
+        public static int linea = 1;
         const int F = -1;
         const int E = -2;
-        int[,] TRAND = {
-             {  0,  1,  2, 33,  1, 12, 14,  8,  9, 10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34,  0,  F, 33  },
-            {  F,  1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  E,  E,  4,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
-            {  F,  F,  4,  F,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  E,  E,  7,  E,  E,  6,  6,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
-            {  E,  E,  7,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
-            {  F,  F,  7,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F, 13,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F,  F, 15,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 17,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 19,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 19,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 22,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F  },
-            { 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 27, 27, 27, 27,  E, 27  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30  },
-            {  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E, 31,  E,  E,  E,  E,  E  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F, 32,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
-            {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 17, 36,  F,  F,  F,  F,  F,  F,  F,  F,  F, 35,  F,  F,  F  },
-            { 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,  0, 35, 35  },
-            { 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36  },
-            { 36, 36, 36, 36, 36, 36, 35, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36,  0, 36, 36, 36  }
+        public int columna = 1;
+        protected int characterCounter;
+        readonly int[,] TRAND = {
+                {  0,  1,  2, 33,  1, 12, 14,  8,  9, 10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34,  0,  F, 33  },
+                {  F,  1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  E,  E,  4,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
+                {  F,  F,  4,  F,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  E,  E,  7,  E,  E,  6,  6,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
+                {  E,  E,  7,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E  },
+                {  F,  F,  7,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F, 13,  F,  F,  F,  F, 13,  F,  F,  F,  F,  F,  F, 15,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 17,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 19,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 19,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 22,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F, 24,  F,  F,  F,  F,  F,  F,  F  },
+                { 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 27, 27, 27, 27,  E, 27  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30  },
+                {  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E,  E, 31,  E,  E,  E,  E,  E  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F, 32,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
+                {  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, 17, 36,  F,  F,  F,  F,  F,  F,  F,  F,  F, 35,  F,  F,  F  },
+                { 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35,  0, 35, 35  },
+                { 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36  },
+                { 36, 36, 36, 36, 36, 36, 35, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36,  0, 36, 36, 36  }
+            };
 
-        };
-        public Lexico()
-        {  
-            log = new StreamWriter("./prueba.log");
-            asm = new StreamWriter(PATH + "prueba.asm");
-            log.AutoFlush = true;
-            asm.AutoFlush = true;
-            
-            if( File.Exists(PATH + "prueba.cpp"))
-            {
-            archivo = new StreamReader(PATH + "prueba.cpp");  
-            }
-            else
-            {
-                throw new Error("El archivo prueba.cpp no existe", log);
-            }
-            
-        }
-
-        
-        public Lexico(string fileName)
+        public Lexico(string nombreArchivo = "prueba.cpp")
         {
-            string fileNameWithoutExtension;
-            fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-            log = new StreamWriter( fileNameWithoutExtension + ".log");
-            log.AutoFlush = true;
-            
-
-            if(System.IO.Path.GetExtension(fileName).ToLower() == ".cpp")
+            characterCounter = 1;
+            string nombreArchivoWithoutExt = Path.GetFileNameWithoutExtension(nombreArchivo);   /* Obtenemos el nombre del archivo sin la extensión para poder crear el .log y .asm */
+            if (File.Exists(nombreArchivo))
             {
-                
-                asm = new StreamWriter(fileNameWithoutExtension + ".asm");
+                log = new StreamWriter(nombreArchivoWithoutExt + ".log");
+                asm = new StreamWriter(nombreArchivoWithoutExt + ".asm");
+                log.AutoFlush = true;
                 asm.AutoFlush = true;
-                if( File.Exists(fileName))
-                {
-                archivo = new StreamReader(fileName);   
-                
-                }
-                else
-                {
-                    throw new Error("El archivo prueba.cpp no existe", log);
-                }
+                archivo = new StreamReader(nombreArchivo);
+                DateTime ahora = DateTime.Now;
+                log.WriteLine("Archivo: " + nombreArchivo);
+                log.WriteLine("Fecha y hora: " + ahora.ToString());
+                log.WriteLine("----------------------------------");
+            }
+            else if (Path.GetExtension(nombreArchivo) != ".cpp")
+            {
+                throw new ArgumentException("El archivo debe ser de extensión .cpp");
             }
             else
             {
-                throw new Error("El tipo de archivo no es correcto, se esperaba (.cpp) ", log);
+                throw new FileNotFoundException("La extensión " + Path.GetExtension(nombreArchivo) + " no existe");    /* Defino una excepción que indica que existe un error con el archivo en caso de no ser encontrado */
             }
-            log.WriteLine("Archivo: " + fileName);
-            DateTime fecha = DateTime.Now;
-            log.WriteLine("Fecha de Compilación: " + fecha.ToString("d"));
-            log.WriteLine("Hora de Compilación: " + fecha.ToString("HH:mm:ss"));
-            // Console.WriteLine("Archivo: " + fileName); 
-            
-
         }
-        
-        
         public void Dispose()
         {
             archivo.Close();
             log.Close();
             asm.Close();
-            // sl.Close();
         }
-        /*
-            WS	L	D	.	E|e	+	-	;	{	}	?	=	*	%	&	|	!	<	>	"	\'	#	/	\n	EOF	λ
-        */
+
         private int Columna(char c)
         {
-            if (c == '\n')
+            //int columna;
+            
+            if(c == '\n')
             {
                 return 23;
             }
@@ -138,7 +107,7 @@ namespace Sintaxis_1
             {
                 return 24;
             }
-            else if(char.IsWhiteSpace(c))
+            else if (char.IsWhiteSpace(c))
             {
                 return 0;
             }
@@ -150,19 +119,19 @@ namespace Sintaxis_1
             {
                 return 1;
             }
-            else if(char.IsDigit(c))
+            else if (char.IsDigit(c))
             {
                 return 2;
             }
-            else if(c == '.')
+            else if (c == '.')
             {
                 return 3;
             }
-            else if(c == '+')
+            else if (c == '+')
             {
                 return 5;
             }
-            else if(c == '-')
+            else if (c == '-')
             {
                 return 6;
             }
@@ -230,225 +199,273 @@ namespace Sintaxis_1
             {
                 return 22;
             }
-            return 25;
-            
+            // else
+            // {
+                return 25;
+            // }
         }
-        private void Clasifica(int estado){
-            switch (estado){
+        private void Clasifica(int estado)
+        {
+            switch (estado)
+            {
                 case 1: setClasificacion(Tipos.Identificador); break;
-                case 2: setClasificacion(Tipos.Numero); break;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7: setClasificacion(Tipos.Numero); break;
                 case 8: setClasificacion(Tipos.FinSentencia); break;
                 case 9: setClasificacion(Tipos.InicioBloque); break;
                 case 10: setClasificacion(Tipos.FinBloque); break;
                 case 11: setClasificacion(Tipos.OperadorTernario); break;
-                case 12:
-                case 14: setClasificacion(Tipos.OperadorTermino); break;
+                case 12: setClasificacion(Tipos.OperadorTermino); break;
                 case 13: setClasificacion(Tipos.IncrementoTermino); break;
+                case 14: setClasificacion(Tipos.OperadorTermino); break;
                 case 15: setClasificacion(Tipos.Puntero); break;
-                case 16:
-                case 34: setClasificacion(Tipos.OperadorFactor); break;
+                case 16: setClasificacion(Tipos.OperadorFactor); break;
                 case 17: setClasificacion(Tipos.IncrementoFactor); break;
+                case 18: setClasificacion(Tipos.Caracter); break;
+                case 19: setClasificacion(Tipos.OperadorLogico); break;
+                case 20: setClasificacion(Tipos.Caracter); break;
+                case 21: setClasificacion(Tipos.OperadorLogico); break;
+                case 22: setClasificacion(Tipos.OperadorRelacional); break;
+                case 23: setClasificacion(Tipos.Asignacion); break;
+                case 24:
+                case 25:
+                case 26: setClasificacion(Tipos.OperadorRelacional); break;
+                case 27:
+                case 28: setClasificacion(Tipos.Cadena); break;
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 33: setClasificacion(Tipos.Caracter); break;
+                case 34:
+                case 35:
+                case 36:
+                case 37: setClasificacion(Tipos.OperadorFactor); break;
+                /*
+                case 1: Clasification = Tipos.Indentificador; break;
+                case 2: Clasification = Tipos.Numero; break;
+                case 8: Clasification = Tipos.FinSentencia; break;
+                case 9: Clasification = Tipos.InicioBloque; break;
+                case 10: Clasification = Tipos.FinBloque; break;
+                case 11: Clasification = Tipos.OperadorTernario; break;
+                case 12:
+                case 14: Clasification = Tipos.OperadorTermino; break;
+                case 13: Clasification = Tipos.IncrementoTermino; break;
+                case 15: Clasification = Tipos.Puntero; break;
+                case 16:
+                case 34: Clasification = Tipos.OperadorFactor; break;
+                case 17: Clasification = Tipos.IncrementoFactor; break;
                 case 18:
                 case 20:
                 case 29:
                 case 32:
-                case 33: setClasificacion(Tipos.Caracter); break;
+                case 33: Clasification = Tipos.Caracter; break;
                 case 19:
-                case 21: setClasificacion(Tipos.OperadorLogico); break;
+                case 21: Clasification = Tipos.OperadorLogico; break;
                 case 22:
                 case 24:
                 case 25:
-                case 26: setClasificacion(Tipos.OperadorRelacional); break;
-                case 23: setClasificacion(Tipos.Asignacion); break;
-                case 27: setClasificacion(Tipos.Cadena); break;
-                // default : setClasificacion(Tipos.Caracter); break;
+                case 26: Clasification = Tipos.OperadorRelacional; break;
+                case 23: Clasification = Tipos.Asignacion; break;
+                case 27: Clasification = Tipos.Cadena; break;
+                */
             }
         }
-        // recibe un bool, si es true, matriz; si es negativo estado = excel
-        
         public void nextToken()
         {
-           
             char c;
             string buffer = "";
             int estado = 0;
-            while(estado >= 0)
+            while (estado >= 0)
             {
                 c = (char)archivo.Peek();
                 estado = TRAND[estado, Columna(c)];
-                
                 Clasifica(estado);
+
                 if (estado >= 0)
                 {
+                    
                     archivo.Read();
-                    if(char.IsWhiteSpace(c)){
-                        col ++;
-                    }
-                    else if(char.IsLetterOrDigit(c)){
-                        col ++;
-                    }
+                    characterCounter++;
+                    
                     if (c == '\n')
                     {
                         linea++;
-                        col = 1;
+                        columna = 1;
+                    }
+                    else
+                    {
+                        columna++;
                     }
                     if (estado > 0)
                     {
-                        buffer+= c;
+                        buffer += c;
                     }
-                    else{
+                    else
+                    {
                         buffer = "";
                     }
                 }
             }
-            
-            if (estado == E )
-                {
-                    if (getClasificacion() == Tipos.Numero)
-                    {
-                        throw new Error ("Lexico, se espera un digito", log, linea);
-                    }
-                    else if (getClasificacion() == Tipos.Cadena){
-                        throw new Error ("Lexico, no se ha cerrado la cadena", log, linea);
-                    }
-                    else if (getClasificacion() == Tipos.Caracter){
-                        throw new Error ("Lexico, caracter invalido/no se ha cerrado el caracter", log, linea);
-                    }
-                    else{
-                        throw new Error ("Lexico, no se ha cerrado el comentario de bloque", log, linea);
-                    }
-                    
-                }
-            setContenido (buffer);
-            
-            if (getClasificacion() == Tipos.Identificador)
+            if (estado == E)
             {
-                switch (getContenido())
+                if (getClasificacion() == Tipos.Cadena)
                 {
-                    case "char":
-                    case "int":
-                    case "float":
-                        setClasificacion(Tipos.TipoDato);
-                    break;
-                    case "if":
-                    case "else":
-                    case "do":
-                    case "while":
-                    case "for":
-                          setClasificacion(Tipos.PalabraReservada);
-                    break;
+                    throw new Error("léxico, se esperaba un cierre de cadena", log, linea, columna);
+                }
+                else if (getClasificacion() == Tipos.Caracter)
+                {
+                    throw new Error("léxico, se esperaba un cierre de comilla simple", log, linea, columna);
+                }
+                else if (getClasificacion() == Tipos.Numero)
+                {
+                    throw new Error("léxico, se esperaba un dígito", log, linea, columna);
+                }
+                else
+                {
+                    throw new Error("léxico, se espera fin de comentario", log, linea, columna);
                 }
             }
-
+            setContenido(buffer);
             if (!finArchivo())
             {
-            setContenido(buffer);
-            // log.WriteLine(getContenido() + " ····· " + getClasificacion());
+                if (getClasificacion() == Tipos.Identificador)
+                {
+                    switch (getContenido())
+                    {
+                        case "char":
+                        case "int":
+                        case "float":
+                            setClasificacion(Tipos.TipoDato);
+                            break;
+                        case "if":
+                        case "else":
+                        case "do":
+                        case "while":
+                        case "for":
+                            setClasificacion(Tipos.PalabraReservada);
+                            break;
+                        case "abs":
+                        case "pow":
+                        case "ceil":
+                        case "sqrt":
+                        case "floor":
+                        case "exp":
+                        case "max":
+                        case "log10":
+                        case "log2":
+                        case "rand":
+                        case "trunc":
+                        case "round":
+                            setClasificacion(Tipos.funcionMatematica);
+                        break;
+                    }
+                }
+                //log.WriteLine(getContenido() + " = " + getClasificacion());
             }
-
-           
         }
         public bool finArchivo()
         {
             return archivo.EndOfStream;
         }
-        
     }
 }
-
 /*
 
-    Expresion Regular: Metodo Formal que a través de una secuencia de caracteres 
-    define un PATRON de busqueda
+Expresión Regular: Método Formal que a través de una secuencia de caracteres que define un PATRÓN de búsqueda
 
-    a) Regla BNF
-    b) Reglas BNF extendidas
-    c) Operaciones aplicadas al lenguaje
+a) Reglas BNF 
+b) Reglas BNF extendidas
+c) Operaciones aplicadas al lenguaje
 
-    OAL
+----------------------------------------------------------------
 
-    1. Concatenacion simple ()
-    2. Concatenacion exponencial (Exponente)
-    3. Cerradura de Kleene (*)
-    4. Cerradura Positiva (+)
-    5. Cerradura Epsilon (?)
-    6. Operador OR (|)
-    7. Uso de parentesis ()
+OAL
 
-    L = {A, B , C, D, E, ...., Z, a, b, c, d, ....., z}
-    D = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+1. Concatenación simple (·)
+2. Concatenación exponencial (Exponente) 
+3. Cerradura de Kleene (*)
+4. Cerradura positiva (+)
+5. Cerradura Epsilon (?)
+6. Operador OR (|)
+7. Paréntesis ( y )
 
-    1.  L.D
-        LD
-        >=
+L = {A, B, C, D, E, ... , Z | a, b, c, d, e, ... , z}
 
-    2.  L^3 = LLL
-        D^5 = DDDDD
-        =^2 = ==
-        L^3D^2 = LLLDD
+D = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 
-    3.  L* = Cero o más letras
-        D* = Cero o más digitos
+1. L.D
+    LD
+    >=
 
-    4.  L+ = Una o más letras
-        d* = Uno o más digitos
+2. L^3 = LLL
+    L^3D^2 = LLLDD
+    D^5 = DDDDD
+    =^2 = ==
 
-    5.  L? = Cero o una letra (la letra es opcional)
+3. L* = Cero o más letras
+    D* = Cero o más dígitos
 
-    6.  L | D = letra o digito
-        + | - = + o -
+4. L+ = Una o más letras
+    D+ = Una o más dígitos
 
-    7.  ( L D) L? = (Letra seguido de un digito ) y al final letra opcionañ
+5. L? = Cero o una letra (la letra es optativa-opcional)
 
-    Produccion Gramatical 
+6. L | D = Letra o dígito
+    + | - = más o menos
 
-    Clasificacion del token -> Expresion Regular
+7. (L D) L? (Letra seguido de un dígito y al final una letra opcional)
 
-    Identificador -> L + (L | D )*
+Producción gramátical
 
-    Numero -> d+ (.D+)? (E(+|-)? D+)?
-    
-    FinSentencia -> ;
-    InicioBloque -> {
-    FinBloque -> }
-    OperadorTernario -> ?
+Clasificación del Token -> Expresión regular
 
-    Puntero -> ->
+Identificador -> L (L | D)*
 
-    OperadorTermino -> + | -
-    IncrementoTermino -> +( | =) | -(- | =)
+Número -> D+ (.D+)? (E(+|-)? D+)?
+FinSentencia -> ;
+InicioBloque -> {
+FinBloque -> }
+OperadorTernario -> ?
 
-    Termino+ -> +( + | = )?
-    Termino-P -> - (- | = | >)?
+Puntero -> ->
 
-    OperadorFactor -> * | / | %
-    IncrementoFactor -> *=| /= | %=
+OperadorTermino -> + | -
+IncrementoTermino -> ++ | += | -- | -=
 
-    Factor -> * | / | % (=)?
+Término+ -> + (+ | =)?
+Término- -> - (- | = | >)?
 
-    OperadorLogico -> && | || | !
+OperadorFactor -> * | / | %
+IncrementoFactor -> *= | /= | %=
 
-    NotOpRel -> ! (=)?
+Factor -> * | / | % (=)?
 
-    Asignacion -> =
+OperadorLogico -> && | || | !
 
-    AsOpTel -> = (=)?
+NotOpRel -> ! (=)?
 
-    OperadorRelacional -> > (=)?  | < ( > | =)? | ==
+Asignación -> =
 
-    
-    
-    Cadena -> "c*"
-    
-   
-    Caracter -> 'c' | #d* | Lambda
+AsgOpRel -> = (=)?
 
+OperadorRelacional -> > (=)? | < (> | =)? | == | !=
 
+Cadena -> "c*"
+Carácter -> 'c' | #D* | Lamda
 
-    Automata: Modelo matematico que representa una expresion regular a través 
-    de un GRAFO, para una maquina de estado finito que consiste en un 
-    conjunto de estados bien definidos, 
-    - un estado inical
-    - un alfabeto de entrada 
-    - una funcion de transicion
+----------------------------------------------------------------
+
+Autómata: Modelo matemático que representa una expresión regular a través de un GRAFO, 
+para una maquina de estado finito, para una máquina de estado finito que consiste en 
+un conjunto de estados bien definidos:
+
+- Un estado inicial 
+- Un alfabeto de entrada 
+- Una función de transición 
+
 */

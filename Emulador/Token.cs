@@ -9,45 +9,44 @@ namespace Emulador
     {
         public enum Tipos
         {
-            Identificador,Numero,Caracter,FinSentencia,
-            InicioBloque,FinBloque, OperadorTernario, 
-            OperadorTermino, OperadorFactor, IncrementoTermino, 
-            IncrementoFactor, Puntero, Asignacion, 
-            OperadorRelacional, OperadorLogico, Cadena,
-            TipoDato, PalabraReservada, FuncionMetematica
+            Identificador, Numero, Caracter, FinSentencia,
+            InicioBloque, FinBloque, OperadorTernario,
+            OperadorTermino, OperadorFactor, IncrementoTermino,
+            IncrementoFactor, Puntero, Asignacion,
+            OperadorRelacional, OperadorLogico, Moneda,
+            Cadena, TipoDato, PalabraReservada, FuncionMetematica
         }
         private string contenido;
 
         public string Contenido{
-            set => contenido = value;
             get => contenido;
+            set => contenido = value;
         }
         public Tipos Clasificacion{
             set => clasificacion = value;
             get => clasificacion;
         }
-        
         private Tipos clasificacion;
-        public Token(){
-            contenido = " ";
+        public Token()
+        {
+            contenido = "";
             clasificacion = Tipos.Identificador;
         }
-       
-        /*
-        public void setContenido(string contenido){
-            this.contenido = contenido;
-        }
-        public void setClasificacion(Tipos clasificacion){
-            this.clasificacion = clasificacion;
-        }
-
-        public string getContenido(){
-            return this.contenido;
-        }
-
-        public Tipos getClasificacion(){
-            return this.clasificacion;
-        }
-        */
+        // public void setContenido(string contenido)
+        // {
+        //     this.contenido = contenido;
+        // }
+        // public void setClasificacion(Tipos clasificacion)
+        // {
+        //     this.clasificacion = clasificacion;
+        // }
+        // public string getContenido()
+        // {
+        //     return this.contenido;
+        // }
+        // public Tipos getClasificacion()
+        // {
+        //     return this.clasificacion;
+        // }
     }
 }

@@ -5,40 +5,105 @@ using System.Threading.Tasks;
 
 static void Main(string[] args)
 {
-  Console.WriteLine("Ingresa el valor de b: ");
-  int b = Console.ReadLine();
-  int a = (3+ 5) * 8 - (10 - 2*b) / b; // 61
-  a--;
-  a+=40;
-  a*=2;
-  a--;
-  a-=99;
+    //PROBAR RANDOM
+    int random;
+    int l;
+    int m;
+    int x = 0; // 0-99
+    // Console.WriteLine("Random = " + x);
 
-  int n = 5;
+    do{
+        x++;
+        Console.WriteLine("x: " + x);
+    }while(x<10);
 
-  for(b = 100; a < n; a++) {
-    b++;
-    while( b != 5 ) {
-      if(n == 5) {
-        Console.WriteLine("5 es igual a " + n + " " + a + " " + b );
-      } else {
-        Console.WriteLine("5 es diferente a " + n);
-      }
+    while (l < 10){
+      random = rand(100);
+      m = l + 1;
+      Console.WriteLine(" Random = " + random);
+      l++;
     }
-  }
-
-  if(a % 2 != 0) {
-    Console.WriteLine("Es impar " + a);
-    // b=1;
-    if(b == 2) {
-      Console.WriteLine("b es igual a 2");
-    } else if( b > 3) {
-      Console.WriteLine("b es mayor a 3 y vale " + b);
+    for (l = 0; l < 10; l++){
+      random = rand(100);
+      m = l + 1;
+      Console.WriteLine(" Random = " + random);
     }
-    else {
-      Console.WriteLine("b no es igual a 2 y vale " + b);
+    // PRUEBA DEL PROFESOR
+    char n;
+    int p;
+    float altura, i, j;
+    float y = 10, z = 2;
+    x = 0; 
+    float c;
+    // c = (char)(100 + 200); // 44
+    c=44;
+    Console.Write("Valor de altura = ");
+    // altura = Console.ReadLine();
+    altura = 5;
+    // Si altura = 5, entonces
+    // x = (char)(((3 + altura) * 8 - (10 - 4) / 2)); // 61
+    x=61;
+    x--;                                           // 60
+    x += 40;                                       // 100
+    x *= 2;                                        // 200
+    x /= (y - 6);                                  // 50
+    x = x + 5;                                     // 55
+    Console.WriteLine("x = " + x);
+    for (i = 1; i <= altura; i++)
+    {
+        for (j = 1; j <= i; j++)
+        {
+            if (j % 2 == 0)
+                Console.Write("*");
+            else
+                Console.Write("-");
+        }
+        Console.WriteLine("");
     }
-  } else {
-    Console.WriteLine("Es impar");
-  }
+    i = 0;
+    do
+    {
+        Console.Write("-");
+        i++;
+    } while (i < altura * 2);
+    Console.WriteLine("");
+    for (i = 1; i <= altura; i++)
+    {
+        j = 1;
+        while (j <= i)
+        {
+            Console.Write("" + j);
+            j++;
+        }
+        Console.WriteLine("");
+    }
+    i = 0;
+    do
+    {
+        Console.Write("-");
+        i++;
+    } while (i < altura * 2);
+    Console.WriteLine("");
+    // PROBAR CICLOS
+    int height;
+    int k;
+    int spaces;
+    int asteristics;
+    Console.Write("Height of the triangle = ");
+    // console readline();
+    height = Console.ReadLine();
+    height = 3;
+    Console.WriteLine();
+    for (k = 0; k < height; k++)
+    {
+        for (spaces = 0; spaces < k; spaces++)
+        {
+            Console.Write(" ");
+        }
+        for (asteristics = 0; asteristics < height - k; asteristics++)
+        {
+            Console.Write("* ");
+        }
+        Console.WriteLine();
+    }
 }

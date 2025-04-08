@@ -1,8 +1,4 @@
 Archivo: prueba.cpp
-Fecha de Compilación: 03/12/2024
-Hora de Compilación: 15:34:20
-
-Lista de varibles: 
-b Int 101
-a Int 101
-n Int 5
+Fecha y hora: 07/04/2025 11:02:59 p. m.
+----------------------------------
+Error: Sintaxis. Se espera un ; en la linea [94] en la columna [22]

@@ -17,7 +17,7 @@ namespace Emulador
                 nextToken();
             }
             else{
-                 throw new Error("Sintaxis: se espera un: " + contenido, log, linea, col);
+                throw new Error("Sintaxis: se espera l un: " + contenido, log, linea, col);
             }
         }
         public void match(Tipos tipo){
