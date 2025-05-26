@@ -121,17 +121,20 @@ namespace Sintaxis_1
                     {
                         match("Read");
                         int r = Console.Read();
-                        if ((r >= 'A' && r <= 'Z') 
-                        || (r >= 'a' && r <= 'z') 
-                        || (r >= '0' && r <= '9'))
-                        {
-                            l.Last().setValor(r); // Asignamos el último valor leído a la última variable detectada
-                        }
-                        else
-                        {
-                            throw new Error("Sintaxis. No se ingresó un número o letra", log, linea, columna);
-                        }
+                        char c = (char)r;
 
+                        if (char.IsDigit(c))
+                        {
+                            
+                            l.Last().setValor(r-48);
+                        }
+                        else if(char.IsLetter(c)){
+                            l.Last().setValor(r-48);
+                        }
+                        else{
+                            throw new Error("Sintaxis. No se ingresó un número ", log, linea, columna);
+                        }
+                        
                     }
                     else
                     {
@@ -396,7 +399,7 @@ namespace Sintaxis_1
                 // Console.WriteLine(characterCounter);
                 // Console.WriteLine(getContenido());
                 nextToken();
-                Console.WriteLine(getContenido());
+                // Console.WriteLine(getContenido());
                 executeWhile = Condicion() && ejecuta;
                 match(")");
                 // match("while");
@@ -727,6 +730,12 @@ namespace Sintaxis_1
                     maximoTipo = tipoCasteo;
                     // Console.WriteLine(Contenido);
                     if (maximoTipo == Variable.TipoDato.Int)
+                    {
+                        s.Push(s.Pop() % 256);
+                        asm.WriteLine("\tpop eax");
+                        asm.WriteLine("\tpush eax");
+                    }
+                    else if (maximoTipo == Variable.TipoDato.Char)
                     {
                         s.Push(s.Pop() % 256);
                         asm.WriteLine("\tpop eax");

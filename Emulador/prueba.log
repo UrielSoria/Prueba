@@ -1,4 +1,9 @@
 Archivo: prueba.cpp
-Fecha y hora: 06/04/2025 06:33:50 p. m.
+Fecha y hora: 07/04/2025 11:08:22 p. m.
 ----------------------------------
-Error: Sintaxis: se espera l un: ( en la linea [12] en la columna [0]
+Constructor lenguaje
+Lista de variables: 
+aux Int 2
+b Int 101
+a Int 101
+n Int 5

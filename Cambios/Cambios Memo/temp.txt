@@ -1,0 +1,15 @@
+int lectura;
+float voltaje;
+float temperatura;
+void setup() {
+  Serial.begin(9600);
+}
+void loop() {
+  lectura = analogRead(A5);
+  voltaje = lectura * 5.0 / 1023.0;
+  temperatura = 100 * voltaje - 60;
+  Serial.println();
+  Serial.println("Temperatura Actual ");
+  Serial.println(temperatura);
+  delay(1000);
+}

@@ -3,29 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emulador
+namespace Sintaxis_1
 {
     public class Sintaxis : Lexico
     {
-       
-        public Sintaxis(string name) : base(name)
+        public Sintaxis() : base()
         {
             nextToken();
         }
-        public void match(string contenido){
-            if (contenido == Contenido){
+        public Sintaxis(string nombre) : base(nombre)
+        {
+            nextToken();
+        }
+        public void match(string contenido)
+        {
+            if (contenido == getContenido())
+            {
                 nextToken();
             }
-            else{
-                throw new Error("Sintaxis: se espera l un: " + contenido, log, linea, col);
+            else
+            {
+                throw new Error("Sintaxis. Se espera un " + contenido, log, linea, columna);
             }
         }
-        public void match(Tipos tipo){
-            if (tipo == Clasificacion){
+        public void match(Tipos clasificacion)
+        {
+            if (clasificacion == getClasificacion())
+            {
                 nextToken();
             }
-            else{
-                throw new Error("Sintaxis: se espera un tipo: " + tipo, log, linea, col);
+            else
+            {
+                throw new Error("Sintaxis. Se espera un " + clasificacion, log, linea, columna);
             }
         }
     }

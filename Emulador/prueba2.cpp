@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 static void Main(string[] args)
 {
-  int aux = 0;
   int b = Console.ReadLine();
   int a = (3 + 5) * 8 - (10 - 2*b) / b; // 61
   a--;
@@ -20,26 +19,22 @@ static void Main(string[] args)
     b++;
     while( b != 5 ) {
       if(n == 5) {
-        aux = 5;
-        Console.WriteLine("" + aux + " es igual a " + n + " " + a + " " + b);
+        Console.WriteLine("5 es igual a " + n + " " + a + " " + b );
       } else {
-        aux = 5;
-        Console.WriteLine("" + aux + " es diferente a " + n);
+        Console.WriteLine("5 es diferente a " + n);
       }
     }
   }
+
   if(a % 2 != 0) {
     Console.WriteLine("Es impar " + a);
     if(b == 2) {
-      aux = 2;
-      Console.WriteLine("b es igual a " + aux);
+      Console.WriteLine("b es igual a 2");
     } else if( b > 3) {
-      aux = 3;
-      Console.WriteLine("b es mayor a " + aux + " y vale " + b);
+      Console.WriteLine("b es mayor a 3 y vale " + b);
     }
     else {
-      aux = 2;
-      Console.WriteLine("b no es igual a " + aux + " y vale " + b);
+      Console.WriteLine("b no es igual a 2 y vale " + b);
     }
   } else {
     Console.WriteLine("Es impar");

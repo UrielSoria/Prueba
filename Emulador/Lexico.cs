@@ -10,16 +10,14 @@ using System.Data.Common;
 using System.IO.Compression;
 using Microsoft.VisualBasic;
 
-namespace Emulador
+namespace Sintaxis_1
 {
     public class Lexico : Token, IDisposable
     {
         public StreamReader archivo;
         public StreamWriter log;
         public StreamWriter asm;
-        public static int linea = 1;
-        public static int col = 0;
-        protected int characterCounter;
+        public int linea = 1;
         const int F = -1;
         const int E = -2;
         public int columna = 1;
@@ -61,12 +59,28 @@ namespace Emulador
             {F,F,F,F,F,F,F,F,F,F,F,17,36,F,F,F,F,F,F,F,F,F,35,F,F,F},
             {35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,0,35,35},
             {36,36,36,36,36,36,36,36,36,36,36,36,37,36,36,36,36,36,36,36,36,36,36,36,E,36},
-            {36,36,36,36,36,36,35,36,36,36,36,36,37,36,36,36,36,36,36,36,36,36,0,36,E,36},
+            {36,36,36,36,36,36,36,36,36,36,36,36,37,36,36,36,36,36,36,36,36,36,0,36,E,36},
         };
 
-        public Lexico(string nombreArchivo = "prueba.cpp")
+        public Lexico()
         {
-            characterCounter = 1;
+            log = new StreamWriter("prueba.log");
+            asm = new StreamWriter("prueba.asm");
+            log.AutoFlush = true;
+            asm.AutoFlush = true;
+            if (File.Exists("prueba.cpp"))
+            {
+                archivo = new StreamReader("prueba.cpp");
+            }
+            else
+            {
+                throw new Error("El archivo prueba.cpp no existe", log);
+            }
+        }
+
+        public Lexico(string nombreArchivo)
+        {
+
             string nombreArchivoWithoutExt = Path.GetFileNameWithoutExtension(nombreArchivo);   /* Obtenemos el nombre del archivo sin la extensión para poder crear el .log y .asm */
             if (File.Exists(nombreArchivo))
             {
@@ -212,43 +226,43 @@ namespace Emulador
         {
             switch (estado)
             {
-                case 1: Clasificacion =Tipos.Identificador; break;
+                case 1: setClasificacion(Tipos.Identificador); break;
                 case 2:
                 case 3:
                 case 4:
                 case 5:
                 case 6:
-                case 7: Clasificacion =Tipos.Numero; break;
-                case 8: Clasificacion =Tipos.FinSentencia; break;
-                case 9: Clasificacion =Tipos.InicioBloque; break;
-                case 10: Clasificacion =Tipos.FinBloque; break;
-                case 11: Clasificacion =Tipos.OperadorTernario; break;
-                case 12: Clasificacion =Tipos.OperadorTermino; break;
-                case 13: Clasificacion =Tipos.IncrementoTermino; break;
-                case 14: Clasificacion =Tipos.OperadorTermino; break;
-                case 15: Clasificacion =Tipos.Puntero; break;
-                case 16: Clasificacion =Tipos.OperadorFactor; break;
-                case 17: Clasificacion =Tipos.IncrementoFactor; break;
-                case 18: Clasificacion =Tipos.Caracter; break;
-                case 19: Clasificacion =Tipos.OperadorLogico; break;
-                case 20: Clasificacion =Tipos.Caracter; break;
-                case 21: Clasificacion =Tipos.OperadorLogico; break;
-                case 22: Clasificacion =Tipos.OperadorRelacional; break;
-                case 23: Clasificacion =Tipos.Asignacion; break;
+                case 7: setClasificacion(Tipos.Numero); break;
+                case 8: setClasificacion(Tipos.FinSentencia); break;
+                case 9: setClasificacion(Tipos.InicioBloque); break;
+                case 10: setClasificacion(Tipos.FinBloque); break;
+                case 11: setClasificacion(Tipos.OperadorTernario); break;
+                case 12: setClasificacion(Tipos.OperadorTermino); break;
+                case 13: setClasificacion(Tipos.IncrementoTermino); break;
+                case 14: setClasificacion(Tipos.OperadorTermino); break;
+                case 15: setClasificacion(Tipos.Puntero); break;
+                case 16: setClasificacion(Tipos.OperadorFactor); break;
+                case 17: setClasificacion(Tipos.IncrementoFactor); break;
+                case 18: setClasificacion(Tipos.Caracter); break;
+                case 19: setClasificacion(Tipos.OperadorLogico); break;
+                case 20: setClasificacion(Tipos.Caracter); break;
+                case 21: setClasificacion(Tipos.OperadorLogico); break;
+                case 22: setClasificacion(Tipos.OperadorRelacional); break;
+                case 23: setClasificacion(Tipos.Asignacion); break;
                 case 24:
                 case 25:
-                case 26: Clasificacion =Tipos.OperadorRelacional; break;
+                case 26: setClasificacion(Tipos.OperadorRelacional); break;
                 case 27:
-                case 28: Clasificacion =Tipos.Cadena; break;
+                case 28: setClasificacion(Tipos.Cadena); break;
                 case 29:
                 case 30:
                 case 31:
                 case 32:
-                case 33: Clasificacion =Tipos.Caracter; break;
+                case 33: setClasificacion(Tipos.Caracter); break;
                 case 34:
                 case 35:
                 case 36:
-                case 37: Clasificacion =Tipos.OperadorFactor; break;
+                case 37: setClasificacion(Tipos.OperadorFactor); break;
             }
         }
         public void nextToken()
@@ -264,7 +278,6 @@ namespace Emulador
                 if (estado >= 0)
                 {
                     archivo.Read();
-                    characterCounter++;
                     if (c == '\n')
                     {
                         linea++;
@@ -286,15 +299,15 @@ namespace Emulador
             }
             if (estado == E)
             {
-                if (Clasificacion == Tipos.Cadena)
+                if (getClasificacion() == Tipos.Cadena)
                 {
                     throw new Error("léxico, se esperaba un cierre de cadena", log, linea, columna);
                 }
-                else if (Clasificacion == Tipos.Caracter)
+                else if (getClasificacion() == Tipos.Caracter)
                 {
                     throw new Error("léxico, se esperaba un cierre de comilla simple", log, linea, columna);
                 }
-                else if (Clasificacion == Tipos.Numero)
+                else if (getClasificacion() == Tipos.Numero)
                 {
                     throw new Error("léxico, se esperaba un dígito", log, linea, columna);
                 }
@@ -303,42 +316,28 @@ namespace Emulador
                     throw new Error("léxico, se espera fin de comentario", log, linea, columna);
                 }
             }
-            Contenido = buffer;
+            setContenido(buffer);
             if (!finArchivo())
             {
-                if (Clasificacion == Tipos.Identificador)
+                if (getClasificacion() == Tipos.Identificador)
                 {
-                    switch (Contenido)
+                    switch (getContenido())
                     {
                         case "char":
                         case "int":
                         case "float":
-                            Clasificacion =Tipos.TipoDato;
+                            setClasificacion(Tipos.TipoDato);
                             break;
                         case "if":
                         case "else":
                         case "do":
                         case "while":
                         case "for":
-                            Clasificacion =Tipos.PalabraReservada;
+                            setClasificacion(Tipos.PalabraReservada);
                             break;
-                        case "abs":
-                        case "pow":
-                        case "ceil":
-                        case "sqrt":
-                        case "floor":
-                        case "exp":
-                        case "max":
-                        case "log10":
-                        case "log2":
-                        case "rand":
-                        case "trunc":
-                        case "round":
-                            Clasificacion = Tipos.FuncionMetematica;
-                        break;
                     }
                 }
-                //log.WriteLine(Contenido + " = " + Clasificacion);
+                //log.WriteLine(getContenido() + " = " + getClasificacion());
             }
         }
         public bool finArchivo()

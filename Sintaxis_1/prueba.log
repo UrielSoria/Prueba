@@ -1,4 +1,20 @@
 Archivo: prueba.cpp
-Fecha y hora: 07/04/2025 11:02:59 p. m.
+Fecha y hora: 08/04/2025 11:22:33 a. m.
 ----------------------------------
-Error: Sintaxis. Se espera un ; en la linea [94] en la columna [22]
+Lista de variables: 
+random Int 95
+l Int 10
+m Int 11
+x Int 55
+n Char 0
+p Int 0
+i Float 6
+j Float 2
+y Float 10
+z Float 2
+c Float 44
+altura Float 3
+k Int 1
+spaces Int 0
+asteristics Int 0
+height Int 1

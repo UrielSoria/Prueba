@@ -3,50 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emulador
+namespace Sintaxis_1
 {
     public class Token
     {
         public enum Tipos
         {
-            Identificador, Numero, Caracter, FinSentencia,
-            InicioBloque, FinBloque, OperadorTernario,
-            OperadorTermino, OperadorFactor, IncrementoTermino,
-            IncrementoFactor, Puntero, Asignacion,
-            OperadorRelacional, OperadorLogico, Moneda,
-            Cadena, TipoDato, PalabraReservada, FuncionMetematica
+            Identificador, 
+            Numero, 
+            Caracter, 
+            FinSentencia,
+            InicioBloque, 
+            FinBloque, 
+            OperadorTernario,
+            OperadorTermino, 
+            OperadorFactor, 
+            IncrementoTermino,
+            IncrementoFactor, 
+            Puntero, 
+            Asignacion,
+            OperadorRelacional, 
+            OperadorLogico, 
+            Moneda,
+            Cadena, 
+            TipoDato, 
+            PalabraReservada
         }
         private string contenido;
-
-        public string Contenido{
-            get => contenido;
-            set => contenido = value;
-        }
-        public Tipos Clasificacion{
-            set => clasificacion = value;
-            get => clasificacion;
-        }
         private Tipos clasificacion;
         public Token()
         {
             contenido = "";
             clasificacion = Tipos.Identificador;
         }
-        // public void setContenido(string contenido)
-        // {
-        //     this.contenido = contenido;
-        // }
-        // public void setClasificacion(Tipos clasificacion)
-        // {
-        //     this.clasificacion = clasificacion;
-        // }
-        // public string getContenido()
-        // {
-        //     return this.contenido;
-        // }
-        // public Tipos getClasificacion()
-        // {
-        //     return this.clasificacion;
-        // }
+        public void setContenido(string contenido)
+        {
+            this.contenido = contenido;
+        }
+        public void setClasificacion(Tipos clasificacion)
+        {
+            this.clasificacion = clasificacion;
+        }
+        public string getContenido()
+        {
+            return this.contenido;
+        }
+        public Tipos getClasificacion()
+        {
+            return this.clasificacion;
+        }
     }
 }

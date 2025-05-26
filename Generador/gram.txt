@@ -1,0 +1,14 @@
+Lenguaje: Go;
+
+{
+Programa -> A\?\; 
+A -> Numero A\? \;
+  B -> A z \;
+  D -> a A \| b \| c \| C \;
+  C -> A \| B\;
+
+  
+  E -> \(a b c\) \;
+  F -> \(a b c\)\? B \;
+
+}

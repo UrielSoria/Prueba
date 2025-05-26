@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emulador
+namespace Sintaxis_1
 {
     public class Variable
     {
@@ -20,31 +20,19 @@ namespace Emulador
             this.nombre = nombre;
             this.valor = valor;
         }
-        public float Valor{
-            get => valor;
-            set => valor = value;
+        public void setValor(float valor){
+            this.valor = valor;
         }
-        // public void setValor(float valor){
-        //     this.valor = valor;
-        // }
-        // public float getValor()
-        // {
-        //     return valor;
-        // }
-        public string getNombre{
-            get => nombre;
-            // set => nombre = value;
+        public float getValor()
+        {
+            return valor;
         }
-        public TipoDato getTipoDato{
-            get => tipo;
-            // set => tipo = value; 
+        public string getNombre()
+        {
+            return nombre;
         }
-        // public string getNombre()
-        // {
-        //     return nombre;
-        // }
-        // public TipoDato GetTipoDato(){
-        //     return tipo;
-        // }
+        public TipoDato GetTipoDato(){
+            return tipo;
+        }
     }
 }
